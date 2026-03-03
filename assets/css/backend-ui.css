@@ -1540,6 +1540,25 @@
 #pw-backend-ui-app p.search-box input[type="search"] {
 	float: none;
 	margin: 0;
+	width: 200px;
+	padding: 5px 10px;
+	font-size: 13px;
+	color: var(--pw-color-fg-default) !important;
+	background: var(--pw-color-bg-inset) !important;
+	border: 1px solid var(--pw-color-border-default) !important;
+	border-radius: 2px;
+	box-shadow: none !important;
+	outline: none;
+	-webkit-appearance: none;
+	appearance: none;
+	transition: border-color 0.15s, box-shadow 0.15s;
+}
+#pw-backend-ui-app p.search-box input[type="search"]::placeholder {
+	color: var(--pw-color-fg-subtle);
+}
+#pw-backend-ui-app p.search-box input[type="search"]:focus {
+	border-color: var(--pw-color-accent-fg) !important;
+	box-shadow: 0 0 0 2px var(--pw-color-accent-muted) !important;
 }
 #pw-backend-ui-app p.search-box input[type="submit"] {
 	float: none;
@@ -1552,9 +1571,6 @@
 #pw-backend-ui-app .tablenav select,
 #pw-backend-ui-app .tablenav input[type="submit"] {
 	width: auto;
-}
-#pw-backend-ui-app p.search-box input[type="search"] {
-	width: 200px;
 }
 #pw-backend-ui-app .bulkactions input[type="submit"] {
 	margin-left: 4px;
