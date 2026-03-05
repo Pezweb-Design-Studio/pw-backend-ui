@@ -46,5 +46,8 @@ foreach ((array) ($atts["data_attrs"] ?? []) as $key => $val) {
 			>
 			<span class="pw-bui-switch__slider" aria-hidden="true"></span>
 		</label>
+		<?php if (isset($atts["status_label"]) && $atts["status_label"] !== ""): ?>
+			<span class="pw-bui-switch__status"><?php echo esc_html($atts["status_label"]); ?></span>
+		<?php endif; ?>
 	</div>
 </div>

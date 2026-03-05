@@ -1025,6 +1025,12 @@
 	cursor: not-allowed;
 }
 
+.pw-bui-switch__status {
+	font-size: 12px;
+	color: var(--pw-color-fg-muted);
+	white-space: nowrap;
+}
+
 /* ── TABS (Underline Nav — estilo Primer) ── */
 .pw-bui-tab {
 	display: inline-flex;

@@ -14,9 +14,10 @@ $ui->switch([
     'value'    => '1',               // string — value cuando checked (default: '1')
     'variant'  => 'default',         // 'default' | 'status'
     'help'     => '',                // string — texto de ayuda (opcional)
-    'disabled'   => false,           // bool
-    'class'      => '',              // string — clases extra en el wrap
-    'data_attrs' => [],              // array  — key→value → data-* en el <input>
+    'disabled'     => false,         // bool
+    'class'        => '',            // string — clases extra en el wrap
+    'data_attrs'   => [],            // array  — key→value → data-* en el <input>
+    'status_label' => '',            // string — texto inicial en <span class="pw-bui-switch__status">
 ]);
 ```
 
@@ -49,9 +50,11 @@ $ui->switch([
     </div>
     <label class="pw-bui-switch pw-bui-switch--{variant}" for="pw-switch-{name}">
       <input type="checkbox" id="pw-switch-{name}" name="{name}" value="{value}"
-             class="pw-bui-switch__input" [checked] [disabled]>
+             class="pw-bui-switch__input" [checked] [disabled] [data-*]>
       <span class="pw-bui-switch__slider" aria-hidden="true"></span>
     </label>
+    <!-- solo si status_label !== "" -->
+    <span class="pw-bui-switch__status">Activa</span>
   </div>
 </div>
 ```
@@ -67,11 +70,12 @@ El componente no incluye JS. Para toggle AJAX en una `WP_List_Table`:
 ```php
 // En column_estado():
 $ui->switch([
-    'name'       => 'estado_' . $item->id,
-    'checked'    => $item->activo,
-    'variant'    => 'status',
-    'class'      => 'js-toggle-estado',
-    'data_attrs' => ['id' => $item->id],  // → data-id="95" en el <input>
+    'name'         => 'estado_' . $item->id,
+    'checked'      => $item->activo,
+    'variant'      => 'status',
+    'class'        => 'js-toggle-estado',
+    'data_attrs'   => ['id' => $item->id],
+    'status_label' => $item->activo ? 'Activa' : 'Inactiva',
 ]);
 ```
 
@@ -85,7 +89,14 @@ document.querySelectorAll('.js-toggle-estado .pw-bui-switch__input').forEach(inp
             body: new URLSearchParams({ action: 'my_toggle', nonce: myPlugin.nonce, id: this.dataset.id })
         })
         .then(r => r.json())
-        .then(data => { if (!data.success) this.checked = !this.checked; })
+        .then(data => {
+            if (data.success) {
+                const lbl = this.closest('.pw-bui-switch-wrap').querySelector('.pw-bui-switch__status');
+                if (lbl) lbl.textContent = data.data.activo ? 'Activa' : 'Inactiva';
+            } else {
+                this.checked = !this.checked;
+            }
+        })
         .catch(() => { this.checked = !this.checked; })
         .finally(() => { this.disabled = false; });
     });

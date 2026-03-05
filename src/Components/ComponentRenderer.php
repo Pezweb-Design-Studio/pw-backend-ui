@@ -740,15 +740,16 @@ class ComponentRenderer
 	public function switch(array $atts = []): void
 	{
 		$atts = wp_parse_args($atts, [
-			"name"       => "",
-			"label"      => "",
-			"checked"    => false,
-			"value"      => "1",
-			"variant"    => "default",
-			"help"       => "",
-			"disabled"   => false,
-			"class"      => "",
-			"data_attrs" => [],
+			"name"         => "",
+			"label"        => "",
+			"checked"      => false,
+			"value"        => "1",
+			"variant"      => "default",
+			"help"         => "",
+			"disabled"     => false,
+			"class"        => "",
+			"data_attrs"   => [],
+			"status_label" => "",
 		]);
 		include __DIR__ . "/../../views/components/switch.php";
 	}
