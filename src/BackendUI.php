@@ -96,13 +96,14 @@ class BackendUI
 	public function render_page(array $page): void
 	{
 		$page = wp_parse_args($page, [
-			"title" => "",
+			"title"       => "",
 			"description" => "",
-			"tabs" => [],
-			"content" => null,
-			"sidenav" => null, // callable|array — activa layout sidenav
-			"sidebar" => null,
-			"footer" => null,
+			"breadcrumbs" => [],   // array de items [['label'=>..., 'href'=>...], ...]
+			"tabs"        => [],
+			"content"     => null,
+			"sidenav"     => null, // callable|array — activa layout sidenav
+			"sidebar"     => null,
+			"footer"      => null,
 		]);
 
 		$page = apply_filters("pw_bui/page_config", $page);

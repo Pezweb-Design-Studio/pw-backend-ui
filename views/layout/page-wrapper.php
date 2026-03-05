@@ -85,6 +85,10 @@ $has_sidenav = !empty($page["sidenav"]);
 ?>
     <div class="pw-bui-main">
 
+        <?php if (!empty($page["breadcrumbs"])): ?>
+            <?php $bui->ui()->breadcrumbs(["items" => $page["breadcrumbs"]]); ?>
+        <?php endif; ?>
+
         <?php if (!empty($page["title"]) && !empty($brand["name"])): ?>
             <div style="margin-bottom:20px;">
                 <h1 style="font-size:20px;font-weight:600;color:var(--pw-color-fg-default);margin:0 0 4px;">
