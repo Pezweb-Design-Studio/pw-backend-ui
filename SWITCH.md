@@ -48,13 +48,15 @@ $ui->switch([
       <label for="pw-switch-{name}" class="pw-bui-label">…</label>
       <p class="pw-bui-form-help">…</p>
     </div>
-    <label class="pw-bui-switch pw-bui-switch--{variant}" for="pw-switch-{name}">
-      <input type="checkbox" id="pw-switch-{name}" name="{name}" value="{value}"
-             class="pw-bui-switch__input" [checked] [disabled] [data-*]>
-      <span class="pw-bui-switch__slider" aria-hidden="true"></span>
-    </label>
-    <!-- solo si status_label !== "" -->
-    <span class="pw-bui-switch__status">Activa</span>
+    <div class="pw-bui-switch__control">
+      <!-- solo si status_label !== "" — va ANTES del slider -->
+      <span class="pw-bui-switch__status">Activa</span>
+      <label class="pw-bui-switch pw-bui-switch--{variant}" for="pw-switch-{name}">
+        <input type="checkbox" id="pw-switch-{name}" name="{name}" value="{value}"
+               class="pw-bui-switch__input" [checked] [disabled] [data-*]>
+        <span class="pw-bui-switch__slider" aria-hidden="true"></span>
+      </label>
+    </div>
   </div>
 </div>
 ```

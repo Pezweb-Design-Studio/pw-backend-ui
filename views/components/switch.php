@@ -32,22 +32,24 @@ foreach ((array) ($atts["data_attrs"] ?? []) as $key => $val) {
 				</p>
 			<?php endif; ?>
 		</div>
-		<label class="pw-bui-switch pw-bui-switch--<?php echo esc_attr($variant); ?>"
-		       for="<?php echo esc_attr($switch_id); ?>">
-			<input
-				type="checkbox"
-				id="<?php echo esc_attr($switch_id); ?>"
-				name="<?php echo esc_attr($atts["name"] ?? ""); ?>"
-				value="<?php echo esc_attr($atts["value"] ?? "1"); ?>"
-				class="pw-bui-switch__input"
-				<?php checked($checked); ?>
-				<?php echo !empty($atts["disabled"]) ? "disabled" : ""; ?>
-				<?php echo $data_attrs; ?>
-			>
-			<span class="pw-bui-switch__slider" aria-hidden="true"></span>
-		</label>
-		<?php if (isset($atts["status_label"]) && $atts["status_label"] !== ""): ?>
-			<span class="pw-bui-switch__status"><?php echo esc_html($atts["status_label"]); ?></span>
-		<?php endif; ?>
+		<div class="pw-bui-switch__control">
+			<?php if (isset($atts["status_label"]) && $atts["status_label"] !== ""): ?>
+				<span class="pw-bui-switch__status"><?php echo esc_html($atts["status_label"]); ?></span>
+			<?php endif; ?>
+			<label class="pw-bui-switch pw-bui-switch--<?php echo esc_attr($variant); ?>"
+			       for="<?php echo esc_attr($switch_id); ?>">
+				<input
+					type="checkbox"
+					id="<?php echo esc_attr($switch_id); ?>"
+					name="<?php echo esc_attr($atts["name"] ?? ""); ?>"
+					value="<?php echo esc_attr($atts["value"] ?? "1"); ?>"
+					class="pw-bui-switch__input"
+					<?php checked($checked); ?>
+					<?php echo !empty($atts["disabled"]) ? "disabled" : ""; ?>
+					<?php echo $data_attrs; ?>
+				>
+				<span class="pw-bui-switch__slider" aria-hidden="true"></span>
+			</label>
+		</div>
 	</div>
 </div>
