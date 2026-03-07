@@ -13,7 +13,7 @@ $toggle_id = "pw-toggle-" . sanitize_title($atts["name"]);
 $checked = !empty($atts["checked"]);
 ?>
 
-<div class="pw-bui-form-group">
+<div class="pw-bui-form-group <?php echo esc_attr($atts["wrapper_class"] ?? ""); ?>">
     <div class="pw-bui-toggle-wrap <?php echo esc_attr(
     	$atts["class"] ?? "",
     ); ?>">

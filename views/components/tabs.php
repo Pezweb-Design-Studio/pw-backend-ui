@@ -19,6 +19,7 @@ if (empty($atts["tabs"])) {
 $mode = $atts["mode"] ?? "js";
 ?>
 
+<?php if (!empty($atts["wrapper_class"])): ?><div class="<?php echo esc_attr($atts["wrapper_class"]); ?>"><?php endif; ?>
 <nav
     class="<?php echo esc_attr($atts["class"] ?? ""); ?>"
     role="tablist"
@@ -66,3 +67,4 @@ $mode = $atts["mode"] ?? "js";
     <?php
     endforeach; ?>
 </nav>
+<?php if (!empty($atts["wrapper_class"])): ?></div><?php endif; ?>

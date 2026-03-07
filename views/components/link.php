@@ -19,6 +19,7 @@ $classes = implode(
 	]),
 );
 ?>
+<?php if (!empty($atts["wrapper_class"])): ?><div class="<?php echo esc_attr($atts["wrapper_class"]); ?>"><?php endif; ?>
 <a
     href="<?php echo esc_url($atts["href"] ?? "#"); ?>"
     target="<?php echo esc_attr($atts["target"] ?? "_self"); ?>"
@@ -29,3 +30,4 @@ $classes = implode(
 >
     <?php echo esc_html($atts["label"] ?? ""); ?>
 </a>
+<?php if (!empty($atts["wrapper_class"])): ?></div><?php endif; ?>

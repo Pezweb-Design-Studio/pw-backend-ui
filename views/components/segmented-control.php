@@ -14,13 +14,13 @@ $name = $atts["name"] ?? "";
 $current = $atts["value"] ?? "";
 ?>
 
-<div class="pw-bui-form-group <?php echo esc_attr($atts["class"] ?? ""); ?>">
+<div class="pw-bui-form-group <?php echo esc_attr($atts["wrapper_class"] ?? ""); ?>">
     <?php if (!empty($atts["label"])): ?>
         <p class="pw-bui-label"><?php echo esc_html($atts["label"]); ?></p>
     <?php endif; ?>
 
     <div
-        class="pw-bui-segmented"
+        class="pw-bui-segmented <?php echo esc_attr($atts["class"] ?? ""); ?>"
         data-pw-segmented="<?php echo esc_attr($name); ?>"
         role="group"
         aria-label="<?php echo esc_attr($atts["label"] ?? $name); ?>"

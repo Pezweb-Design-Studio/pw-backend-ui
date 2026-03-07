@@ -16,7 +16,7 @@ $position = $atts["position"] ?? "top";
 ?>
 
 <span
-    class="pw-bui-tooltip-wrap <?php echo esc_attr($atts["class"] ?? ""); ?>"
+    class="pw-bui-tooltip-wrap <?php echo esc_attr(trim(($atts["class"] ?? "") . " " . ($atts["wrapper_class"] ?? ""))); ?>"
     data-pw-tooltip="<?php echo esc_attr($atts["text"] ?? ""); ?>"
     tabindex="0"
     style="display:inline-flex;"

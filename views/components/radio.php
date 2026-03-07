@@ -14,6 +14,7 @@ $radio_id =
 	sanitize_title($atts["name"]) . "-" . sanitize_title($atts["value"]);
 ?>
 
+<?php if (!empty($atts["wrapper_class"])): ?><div class="<?php echo esc_attr($atts["wrapper_class"]); ?>"><?php endif; ?>
 <div class="pw-bui-radio-item <?php echo esc_attr($atts["class"] ?? ""); ?>">
     <input
         type="radio"
@@ -39,3 +40,4 @@ $radio_id =
         <?php endif; ?>
     </div>
 </div>
+<?php if (!empty($atts["wrapper_class"])): ?></div><?php endif; ?>

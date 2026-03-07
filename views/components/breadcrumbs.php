@@ -13,6 +13,7 @@ $items = $atts["items"] ?? [];
 $last = count($items) - 1;
 ?>
 
+<?php if (!empty($atts["wrapper_class"])): ?><div class="<?php echo esc_attr($atts["wrapper_class"]); ?>"><?php endif; ?>
 <nav aria-label="Breadcrumb" class="<?php echo esc_attr(
 	$atts["class"] ?? "",
 ); ?>">
@@ -40,3 +41,4 @@ $last = count($items) - 1;
         endforeach; ?>
     </ol>
 </nav>
+<?php if (!empty($atts["wrapper_class"])): ?></div><?php endif; ?>

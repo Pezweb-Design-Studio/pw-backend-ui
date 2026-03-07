@@ -16,7 +16,7 @@ foreach ((array) ($atts["data_attrs"] ?? []) as $key => $val) {
 	$data_attrs .= " data-" . esc_attr($key) . '="' . esc_attr($val) . '"';
 }
 ?>
-<div class="pw-bui-form-group">
+<div class="pw-bui-form-group <?php echo esc_attr($atts["wrapper_class"] ?? ""); ?>">
 	<div class="<?php echo esc_attr($wrap_class); ?>">
 		<div>
 			<?php if (!empty($atts["label"])): ?>

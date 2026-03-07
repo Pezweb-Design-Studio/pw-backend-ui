@@ -28,6 +28,7 @@ if (empty($steps)) {
 }
 ?>
 
+<?php if (!empty($atts["wrapper_class"])): ?><div class="<?php echo esc_attr($atts["wrapper_class"]); ?>"><?php endif; ?>
 <nav
 	class="pw-bui-stepper <?php echo esc_attr($atts["class"] ?? ""); ?>"
 	aria-label="<?php esc_attr_e("Pasos del formulario", "pw-backend-ui"); ?>"
@@ -75,3 +76,4 @@ if (empty($steps)) {
 	<?php
  endforeach; ?>
 </nav>
+<?php if (!empty($atts["wrapper_class"])): ?></div><?php endif; ?>

@@ -31,6 +31,7 @@ $classes = implode(
 );
 ?>
 
+<?php if (!empty($atts["wrapper_class"])): ?><div class="<?php echo esc_attr($atts["wrapper_class"]); ?>"><?php endif; ?>
 <div
     class="<?php echo esc_attr($classes); ?>"
     role="alert"
@@ -57,3 +58,4 @@ $classes = implode(
         </button>
     <?php endif; ?>
 </div>
+<?php if (!empty($atts["wrapper_class"])): ?></div><?php endif; ?>

@@ -20,6 +20,8 @@ $classes = implode(
 	]),
 );
 ?>
+<?php if (!empty($atts["wrapper_class"])): ?><div class="<?php echo esc_attr($atts["wrapper_class"]); ?>"><?php endif; ?>
 <<?php echo $tag; ?> class="<?php echo esc_attr(
  	$classes,
  ); ?>"><?php echo esc_html($atts["text"] ?? ""); ?></<?php echo $tag; ?>>
+<?php if (!empty($atts["wrapper_class"])): ?></div><?php endif; ?>

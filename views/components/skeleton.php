@@ -15,6 +15,7 @@ $width = $atts["width"] ?? "100%";
 $height = $atts["height"] ?? null;
 ?>
 
+<?php if (!empty($atts["wrapper_class"])): ?><div class="<?php echo esc_attr($atts["wrapper_class"]); ?>"><?php endif; ?>
 <div class="<?php echo esc_attr($atts["class"] ?? ""); ?>" aria-hidden="true">
     <?php if ($type === "avatar"): ?>
         <div
@@ -53,3 +54,4 @@ $height = $atts["height"] ?? null;
         endfor; ?>
     <?php endif; ?>
 </div>
+<?php if (!empty($atts["wrapper_class"])): ?></div><?php endif; ?>

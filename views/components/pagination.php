@@ -39,6 +39,7 @@ $pages = array_unique($pages);
 sort($pages);
 ?>
 
+<?php if (!empty($atts["wrapper_class"])): ?><div class="<?php echo esc_attr($atts["wrapper_class"]); ?>"><?php endif; ?>
 <nav aria-label="Paginación" class="<?php echo esc_attr(
 	$atts["class"] ?? "",
 ); ?>">
@@ -104,3 +105,4 @@ sort($pages);
 
     </div>
 </nav>
+<?php if (!empty($atts["wrapper_class"])): ?></div><?php endif; ?>

@@ -10,7 +10,7 @@
 
 defined("ABSPATH") || exit(); ?>
 
-<div class="pw-bui-form-group <?php echo esc_attr($atts["class"] ?? ""); ?>">
+<div class="pw-bui-form-group <?php echo esc_attr($atts["wrapper_class"] ?? ""); ?>">
     <?php if (!empty($atts["label"])): ?>
         <fieldset style="border:none;padding:0;margin:0;">
             <legend class="pw-bui-label"><?php echo esc_html(
@@ -21,7 +21,7 @@ defined("ABSPATH") || exit(); ?>
                 	$atts["help"],
                 ); ?></p>
             <?php endif; ?>
-            <div class="pw-bui-radio-group">
+            <div class="pw-bui-radio-group <?php echo esc_attr($atts["class"] ?? ""); ?>">
                 <?php foreach ($atts["options"] ?? [] as $option):
                 	$radio_id =
                 		sanitize_title($atts["name"]) .
@@ -62,7 +62,7 @@ defined("ABSPATH") || exit(); ?>
             </div>
         </fieldset>
     <?php else: ?>
-        <div class="pw-bui-radio-group">
+        <div class="pw-bui-radio-group <?php echo esc_attr($atts["class"] ?? ""); ?>">
             <?php foreach ($atts["options"] ?? [] as $option):
             	$radio_id =
             		sanitize_title($atts["name"]) .

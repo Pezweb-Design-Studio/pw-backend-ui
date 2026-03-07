@@ -18,8 +18,10 @@ $classes = implode(
 	]),
 );
 ?>
+<?php if (!empty($atts["wrapper_class"])): ?><div class="<?php echo esc_attr($atts["wrapper_class"]); ?>"><?php endif; ?>
 <span
     class="<?php echo esc_attr($classes); ?>"
     role="status"
     aria-label="<?php echo esc_attr($atts["label"] ?? "Cargando..."); ?>"
 ></span>
+<?php if (!empty($atts["wrapper_class"])): ?></div><?php endif; ?>

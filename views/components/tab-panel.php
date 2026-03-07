@@ -10,6 +10,7 @@
 
 defined("ABSPATH") || exit(); ?>
 
+<?php if (!empty($atts["wrapper_class"])): ?><div class="<?php echo esc_attr($atts["wrapper_class"]); ?>"><?php endif; ?>
 <div
     id="pw-tab-panel-<?php echo esc_attr($atts["slug"] ?? ""); ?>"
     role="tabpanel"
@@ -21,3 +22,4 @@ defined("ABSPATH") || exit(); ?>
     	call_user_func($atts["content"]);
     } ?>
 </div>
+<?php if (!empty($atts["wrapper_class"])): ?></div><?php endif; ?>

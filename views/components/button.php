@@ -30,6 +30,7 @@ if (!empty($atts["style"])) {
 }
 ?>
 
+<?php if (!empty($atts["wrapper_class"])): ?><div class="<?php echo esc_attr($atts["wrapper_class"]); ?>"><?php endif; ?>
 <?php if (!empty($atts["href"])): ?>
 <a
     href="<?php echo esc_url($atts["href"]); ?>"
@@ -61,3 +62,4 @@ if (!empty($atts["style"])) {
     <?php echo esc_html($atts["label"] ?? "Button"); ?>
 </button>
 <?php endif; ?>
+<?php if (!empty($atts["wrapper_class"])): ?></div><?php endif; ?>

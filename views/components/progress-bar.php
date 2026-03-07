@@ -31,7 +31,7 @@ $wrap_class = implode(
 );
 ?>
 
-<div class="pw-bui-form-group">
+<div class="pw-bui-form-group <?php echo esc_attr($atts["wrapper_class"] ?? ""); ?>">
     <?php if (!empty($atts["label"])): ?>
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
             <span class="pw-bui-label" style="margin-bottom:0;"><?php echo esc_html(

@@ -8,4 +8,6 @@
  */
 
 defined("ABSPATH") || exit(); ?>
+<?php if (!empty($atts["wrapper_class"])): ?><div class="<?php echo esc_attr($atts["wrapper_class"]); ?>"><?php endif; ?>
 <hr class="pw-bui-separator <?php echo esc_attr($atts["class"] ?? ""); ?>" />
+<?php if (!empty($atts["wrapper_class"])): ?></div><?php endif; ?>

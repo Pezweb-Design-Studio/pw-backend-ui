@@ -22,7 +22,7 @@ $classes = implode(
 );
 ?>
 
-<div class="pw-bui-form-group">
+<div class="pw-bui-form-group <?php echo esc_attr($atts["wrapper_class"] ?? ""); ?>">
     <?php if (!empty($atts["label"])): ?>
         <label
             for="<?php echo esc_attr($input_id); ?>"

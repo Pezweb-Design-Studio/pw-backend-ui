@@ -14,7 +14,10 @@ if (empty($atts["items"])) {
 	return;
 }
 
-foreach ($atts["items"] as $item):
+$sidenav_class = implode(" ", array_filter(["pw-bui-sidenav", $atts["class"] ?? "", $atts["wrapper_class"] ?? ""]));
+?>
+<nav class="<?php echo esc_attr($sidenav_class); ?>">
+<?php foreach ($atts["items"] as $item):
 
 	// Separator
 	if (isset($item["separator"]) && $item["separator"]):
@@ -58,3 +61,4 @@ foreach ($atts["items"] as $item):
 
 <?php
 endforeach; ?>
+</nav>

@@ -12,7 +12,7 @@ defined("ABSPATH") || exit();
 $checkbox_id = sanitize_title($atts["name"]) . "-" . wp_rand(1000, 9999);
 ?>
 
-<div class="pw-bui-form-group">
+<div class="pw-bui-form-group <?php echo esc_attr($atts["wrapper_class"] ?? ""); ?>">
     <div class="pw-bui-checkbox-item <?php echo esc_attr(
     	$atts["class"] ?? "",
     ); ?>">
