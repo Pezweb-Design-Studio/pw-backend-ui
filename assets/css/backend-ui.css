@@ -2035,22 +2035,26 @@
 .pw-bui-logo__top {
 	display: flex;
 	align-items: center;
-	gap: 8px;
+	gap: 6px;
 }
 
 .pw-bui-logo__dot {
-	display: inline-block;
-	width: 8px;
-	height: 8px;
-	border-radius: 50%;
-	background-color: #c0392b;
+	display: block;
+	width: 5px !important;
+	height: 5px !important;
+	min-width: 0 !important;
+	min-height: 0 !important;
+	border-radius: 0 !important;
+	background-color: #c0392b !important;
 	flex-shrink: 0;
-	animation: pw-bui-logo-blink 1.2s ease-in-out infinite;
+	padding: 0 !important;
+	margin: 0 !important;
+	animation: pw-bui-logo-blink 0.4s ease-in-out infinite;
 }
 
 @keyframes pw-bui-logo-blink {
 	0%, 100% { opacity: 1; }
-	50%       { opacity: 0.15; }
+	50%       { opacity: 0; }
 }
 
 .pw-bui-logo__brand {
@@ -2067,5 +2071,5 @@
 	letter-spacing: 0.02em;
 	color: var(--pw-color-fg-muted, #888);
 	line-height: 1;
-	padding-left: 16px; /* indent under the brand text, after the dot */
+	padding-left: 11px; /* 5px dot + 6px gap */
 }
