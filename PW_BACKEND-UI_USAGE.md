@@ -141,17 +141,21 @@ Or inside a `render_page()` callback, use the injected `$bui`:
 
 ## Components reference
 
-### logo
+### logo (header)
+
+The logo renders automatically in the page header via `BackendUI::init()`. Configure it with the `brand` key:
 
 ```php
-$ui->logo([
-    'brand'       => 'PEZWEB',             // main brand text (bold)
-    'plugin_name' => 'My Plugin',          // optional subtitle below
-    'class'       => '',                   // extra CSS classes
+BackendUI::init([
+    // ...
+    'brand' => [
+        'name'        => 'PEZWEB',         // bold brand text next to the dot
+        'plugin_name' => 'Ofertas Avanzadas', // optional subtitle below
+    ],
 ]);
 ```
 
-> Never renders a link. Output is always a plain `<div>`.
+> Never renders a link. Always a plain `<div>`.
 
 ---
 

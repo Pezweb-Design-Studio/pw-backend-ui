@@ -780,26 +780,4 @@ class ComponentRenderer
 		include __DIR__ . "/../../views/components/switch.php";
 	}
 
-	// =========================================================================
-	// LOGO
-	// =========================================================================
-
-	/**
-	 * Render a logo mark (never a link).
-	 *
-	 * @param array $atts {
-	 *     @type string $brand        Main brand text. Default: ''.
-	 *     @type string $plugin_name  Optional sub-label shown below. Default: ''.
-	 *     @type string $class        Extra CSS classes. Default: ''.
-	 * }
-	 */
-	public function logo(array $atts = []): void
-	{
-		$atts = wp_parse_args($atts, [
-			"brand"       => "",
-			"plugin_name" => "",
-			"class"       => "",
-		]);
-		include __DIR__ . "/../../views/components/logo.php";
-	}
 }
