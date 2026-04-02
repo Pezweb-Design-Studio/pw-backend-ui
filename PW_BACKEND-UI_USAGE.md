@@ -141,6 +141,20 @@ Or inside a `render_page()` callback, use the injected `$bui`:
 
 ## Components reference
 
+### logo
+
+```php
+$ui->logo([
+    'brand'       => 'PEZWEB',             // main brand text (bold)
+    'plugin_name' => 'My Plugin',          // optional subtitle below
+    'class'       => '',                   // extra CSS classes
+]);
+```
+
+> Never renders a link. Output is always a plain `<div>`.
+
+---
+
 ### button
 
 ```php
