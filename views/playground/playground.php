@@ -171,6 +171,26 @@ $ui->tab_panel([
 			"label" => "Fecha",
 			"help" => "Formato AAAA-MM-DD",
 		]);
+		$ui->input([
+			"name" => "fl1",
+			"label" => "Archivo",
+			"type" => "file",
+			"help" => "Estilo Work OS (botón + nombre de archivo).",
+		]);
+		$ui->input([
+			"name" => "rg1",
+			"label" => "Rango",
+			"type" => "range",
+			"min" => "0",
+			"max" => "100",
+			"value" => "40",
+		]);
+		$ui->input([
+			"name" => "cl1",
+			"label" => "Color",
+			"type" => "color",
+			"value" => "#dd0000",
+		]);
 		pw_pg_section_end();
 		echo "</div><div>";
 		pw_pg_section("Textarea & Select");
@@ -605,6 +625,31 @@ $ui->tab_panel([
 		for ($l = 1; $l <= 6; $l++) {
 			$ui->heading(["text" => "Heading $l — h$l", "level" => $l]);
 		}
+		$ui->heading([
+			"text" => "Eyebrow — sección (Work OS)",
+			"variant" => "eyebrow",
+		]);
+		$ui->section_label(["text" => "Section label (section_label)"]);
+		pw_pg_section_end();
+		pw_pg_section("Stats bar & data table");
+		$ui->stats_bar([
+			"items" => [
+				[
+					"label" => "Neto",
+					"value" => "$120.000",
+					"breakdown" =>
+						"<span>Subtotal <strong>$100.000</strong></span><span>IVA <strong>$20.000</strong></span>",
+				],
+				["label" => "Facturas", "value" => "12"],
+			],
+		]);
+		$ui->data_table([
+			"headers" => ["Campo", "Valor"],
+			"rows" => [
+				["Cliente", "Acme SA"],
+				["Estado", "Activo"],
+			],
+		]);
 		pw_pg_section_end();
 		pw_pg_section("Paragraphs");
 		$ui->paragraph([

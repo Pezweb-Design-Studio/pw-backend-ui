@@ -1,0 +1,428 @@
+/**
+ * pw/backend-ui — Admin bridge (native WordPress screens)
+ *
+ * Opt-in: config admin_bridge + body.pw-bui-admin (see BackendUI).
+ * Tokens duplicados aquí porque el body del admin no tiene [data-pw-theme].
+ * Valores = tema dark Work OS (alineados con backend-ui.css).
+ */
+
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap");
+
+body.pw-bui-admin {
+	--pw-font-sans: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI",
+		"Noto Sans", Helvetica, Arial, sans-serif;
+	--pw-color-bg-default: #1a1a1a;
+	--pw-color-bg-subtle: #242424;
+	--pw-color-bg-inset: #2a2a2a;
+	--pw-color-bg-overlay: #1e1e1e;
+	--pw-color-bg-emphasis: #333333;
+	--pw-color-border-default: #2e2e2e;
+	--pw-color-border-muted: #272727;
+	--pw-color-border-emphasis: #3a3a3a;
+	--pw-color-fg-default: #e5e5e5;
+	--pw-color-fg-muted: #888888;
+	--pw-color-fg-subtle: #555555;
+	--pw-color-focus-border: #5ba4e5;
+	--pw-color-accent-fg: #dd0000;
+	--pw-color-accent-emphasis: #b80000;
+	--pw-bui-br-primary-bg: #1a3a5c;
+	--pw-bui-br-primary-border: #5ba4e5;
+	font-family: var(--pw-font-sans);
+}
+
+/* ── Shell WP (listas + edición) ───────────────────────────── */
+body.pw-bui-admin #wpcontent,
+body.pw-bui-admin #wpbody,
+body.pw-bui-admin #wpbody-content {
+	background: var(--pw-color-bg-default) !important;
+	min-height: 100vh;
+}
+
+body.pw-bui-admin #wpcontent {
+	padding-left: 0 !important;
+	padding-right: 0 !important;
+}
+
+body.pw-bui-admin.edit-php #wpbody-content .wrap {
+	padding: 20px 24px 48px;
+	max-width: none;
+}
+
+body.pw-bui-admin.edit-php .wrap > h1.wp-heading-inline {
+	font-family: var(--pw-font-sans) !important;
+	font-size: 11px !important;
+	font-weight: 700 !important;
+	letter-spacing: 0.18em !important;
+	text-transform: uppercase !important;
+	color: #fff !important;
+}
+
+/* ── wp-list-table (filas tipo tarjeta, Work OS) ─────────────── */
+body.pw-bui-admin .wp-list-table {
+	background: transparent !important;
+	border: none !important;
+	border-collapse: separate !important;
+	border-spacing: 0 3px !important;
+	box-shadow: none !important;
+}
+
+body.pw-bui-admin .wp-list-table.striped > tbody > :nth-child(odd),
+body.pw-bui-admin .wp-list-table.striped > tbody > :nth-child(even),
+body.pw-bui-admin .wp-list-table tbody .alternate,
+body.pw-bui-admin .wp-list-table tbody tr {
+	background: var(--pw-color-bg-overlay) !important;
+	border: none !important;
+}
+
+body.pw-bui-admin .wp-list-table tbody td,
+body.pw-bui-admin .wp-list-table tbody th.check-column {
+	border-top: 1px solid var(--pw-color-border-muted) !important;
+	border-bottom: 1px solid var(--pw-color-border-muted) !important;
+	border-left: none !important;
+	border-right: none !important;
+}
+
+body.pw-bui-admin .wp-list-table tbody tr td:first-child,
+body.pw-bui-admin .wp-list-table tbody tr th:first-child {
+	border-left: 1px solid var(--pw-color-border-muted) !important;
+}
+
+body.pw-bui-admin .wp-list-table tbody tr td:last-child {
+	border-right: 1px solid var(--pw-color-border-muted) !important;
+}
+
+body.pw-bui-admin .wp-list-table tbody tr:hover td,
+body.pw-bui-admin .wp-list-table tbody tr:hover th {
+	background: #222222 !important;
+	border-color: #333333 !important;
+}
+
+body.pw-bui-admin .wp-list-table thead th,
+body.pw-bui-admin .wp-list-table tfoot th {
+	background: var(--pw-color-bg-default) !important;
+	border-bottom: 1px solid var(--pw-color-border-default) !important;
+	font-family: var(--pw-font-sans) !important;
+	font-size: 11px !important;
+	font-weight: 700 !important;
+	letter-spacing: 0.14em !important;
+	text-transform: uppercase !important;
+	color: var(--pw-color-fg-subtle) !important;
+	padding: 10px 10px !important;
+}
+
+body.pw-bui-admin .wp-list-table thead th a,
+body.pw-bui-admin .wp-list-table tfoot th a {
+	color: var(--pw-color-fg-subtle) !important;
+	font-family: var(--pw-font-sans) !important;
+	font-size: 11px !important;
+	font-weight: 700 !important;
+	letter-spacing: 0.14em !important;
+	text-transform: uppercase !important;
+}
+
+body.pw-bui-admin .wp-list-table thead th a:hover,
+body.pw-bui-admin .wp-list-table tfoot th a:hover {
+	color: #aaaaaa !important;
+}
+
+body.pw-bui-admin .wp-list-table thead .sorted .sorting-indicator,
+body.pw-bui-admin .wp-list-table thead .sortable .sorting-indicator {
+	color: #444444;
+}
+
+body.pw-bui-admin .wp-list-table tbody td,
+body.pw-bui-admin .wp-list-table tbody th {
+	font-family: var(--pw-font-sans) !important;
+	font-size: 12px !important;
+	color: #bbbbbb !important;
+	border-color: #262626 !important;
+	padding: 8px 10px !important;
+}
+
+body.pw-bui-admin .wp-list-table .column-title,
+body.pw-bui-admin .wp-list-table td.column-title {
+	background: var(--pw-color-bg-default) !important;
+}
+
+body.pw-bui-admin .wp-list-table .column-title a,
+body.pw-bui-admin .wp-list-table .column-title strong a,
+body.pw-bui-admin .wp-list-table a.row-title,
+body.pw-bui-admin .wp-list-table strong > a.row-title {
+	color: var(--pw-color-fg-default) !important;
+	font-family: var(--pw-font-sans) !important;
+	font-size: 11px !important;
+	font-weight: 700 !important;
+	letter-spacing: 0.14em !important;
+	text-transform: uppercase !important;
+	text-decoration: none !important;
+}
+
+body.pw-bui-admin .wp-list-table .column-title a:hover,
+body.pw-bui-admin .wp-list-table strong > a.row-title:hover {
+	color: #ffffff !important;
+	text-decoration: none !important;
+}
+
+body.pw-bui-admin .wp-list-table tbody td a {
+	color: #aaaaaa !important;
+	text-decoration: none !important;
+}
+
+body.pw-bui-admin .wp-list-table tbody td a:hover {
+	color: #ffffff !important;
+	text-decoration: none !important;
+}
+
+body.pw-bui-admin .wp-list-table .row-actions {
+	font-family: var(--pw-font-sans);
+	font-size: 11px;
+	color: #666666;
+}
+
+body.pw-bui-admin .wp-list-table .row-actions a,
+body.pw-bui-admin .wp-list-table .row-actions button {
+	color: #777777 !important;
+	text-decoration: none !important;
+	background: none !important;
+	border: none !important;
+	padding: 0 !important;
+	font-family: var(--pw-font-sans) !important;
+	font-size: 11px !important;
+	cursor: pointer !important;
+	box-shadow: none !important;
+}
+
+body.pw-bui-admin .wp-list-table .row-actions a:hover,
+body.pw-bui-admin .wp-list-table .row-actions button:hover {
+	color: #cccccc !important;
+}
+
+body.pw-bui-admin .wp-list-table .row-actions .delete a:hover,
+body.pw-bui-admin .wp-list-table .row-actions .trash a:hover {
+	color: var(--pw-color-accent-fg) !important;
+}
+
+body.pw-bui-admin .wp-list-table .no-items td {
+	color: #444444 !important;
+	font-family: var(--pw-font-sans);
+	font-style: italic;
+}
+
+/* Filtros status */
+body.pw-bui-admin .subsubsub {
+	font-family: var(--pw-font-sans);
+	font-size: 11px;
+	color: var(--pw-color-fg-subtle);
+}
+
+body.pw-bui-admin .subsubsub a {
+	color: var(--pw-color-fg-subtle) !important;
+}
+
+body.pw-bui-admin .subsubsub .current,
+body.pw-bui-admin .subsubsub .current a {
+	color: var(--pw-color-fg-default) !important;
+}
+
+/* Tablenav */
+body.pw-bui-admin .tablenav {
+	background: transparent;
+	font-family: var(--pw-font-sans);
+	font-size: 11px;
+	color: var(--pw-color-fg-subtle);
+}
+
+body.pw-bui-admin .tablenav .displaying-num {
+	color: #444444;
+}
+
+body.pw-bui-admin .tablenav .pagination-links a,
+body.pw-bui-admin .tablenav .pagination-links span {
+	color: #666666;
+	border-color: #333333;
+	background: transparent;
+}
+
+body.pw-bui-admin .tablenav .pagination-links a:hover {
+	color: #ffffff;
+	border-color: #555555;
+}
+
+body.pw-bui-admin .tablenav select,
+body.pw-bui-admin .tablenav .button {
+	background: transparent !important;
+	border: 1px solid #333333 !important;
+	border-radius: 0 !important;
+	color: #666666 !important;
+	font-family: var(--pw-font-sans) !important;
+	font-size: 11px !important;
+	box-shadow: none !important;
+}
+
+body.pw-bui-admin .tablenav .button:hover {
+	border-color: #555555 !important;
+	color: #cccccc !important;
+}
+
+/* ── Pantalla de edición (post.php / post-new.php) ─────────── */
+body.pw-bui-admin.post-php #wpbody-content .wrap,
+body.pw-bui-admin.post-new-php #wpbody-content .wrap {
+	padding-left: 20px;
+	padding-right: 20px;
+	padding-bottom: 48px;
+}
+
+body.pw-bui-admin.post-php .wrap > h1,
+body.pw-bui-admin.post-new-php .wrap > h1 {
+	font-family: var(--pw-font-sans) !important;
+	font-size: 12px !important;
+	font-weight: 700 !important;
+	letter-spacing: 0.18em !important;
+	text-transform: uppercase !important;
+	color: #ffffff !important;
+	border-bottom: 1px solid var(--pw-color-border-default) !important;
+	padding-bottom: 14px !important;
+	margin-bottom: 28px !important;
+}
+
+body.pw-bui-admin #title-prompt-text {
+	color: var(--pw-color-fg-subtle);
+	font-family: var(--pw-font-sans);
+}
+
+body.pw-bui-admin #title {
+	background: var(--pw-color-bg-inset) !important;
+	border: 1px solid var(--pw-color-border-emphasis) !important;
+	border-radius: 0 !important;
+	color: var(--pw-color-fg-default) !important;
+	font-family: var(--pw-font-sans) !important;
+	box-shadow: none !important;
+}
+
+body.pw-bui-admin #title:focus {
+	border-color: var(--pw-color-focus-border) !important;
+	box-shadow: 0 0 0 1px var(--pw-color-focus-border) !important;
+}
+
+/* Metaboxes (genérico, sin post-type-*) */
+body.pw-bui-admin .postbox {
+	background: var(--pw-color-bg-overlay) !important;
+	border: 1px solid var(--pw-color-border-default) !important;
+	border-radius: 0 !important;
+	box-shadow: none !important;
+	color: var(--pw-color-fg-default) !important;
+}
+
+body.pw-bui-admin .postbox .inside {
+	background: var(--pw-color-bg-overlay) !important;
+	color: var(--pw-color-fg-default) !important;
+	border-bottom: none !important;
+}
+
+body.pw-bui-admin .postbox .postbox-header,
+body.pw-bui-admin .postbox .hndle {
+	background: var(--pw-color-bg-subtle) !important;
+	border-bottom: 1px solid var(--pw-color-border-default) !important;
+	border-radius: 0 !important;
+	box-shadow: none !important;
+	padding: 10px 14px !important;
+}
+
+body.pw-bui-admin .postbox .postbox-header h2,
+body.pw-bui-admin .postbox .postbox-header h3,
+body.pw-bui-admin .postbox .hndle,
+body.pw-bui-admin .postbox .hndle h2,
+body.pw-bui-admin .postbox .hndle h3 {
+	font-family: var(--pw-font-sans) !important;
+	font-size: 10px !important;
+	font-weight: 700 !important;
+	letter-spacing: 0.14em !important;
+	text-transform: uppercase !important;
+	color: var(--pw-color-fg-muted) !important;
+	background: transparent !important;
+	border: none !important;
+	box-shadow: none !important;
+	padding: 0 !important;
+	margin: 0 !important;
+}
+
+body.pw-bui-admin .postbox .handlediv {
+	background: transparent;
+	border: none;
+	box-shadow: none;
+}
+
+body.pw-bui-admin .postbox .toggle-indicator::before {
+	color: var(--pw-color-fg-muted);
+}
+
+/* Botones core */
+body.pw-bui-admin .button,
+body.pw-bui-admin .button-secondary {
+	background: transparent;
+	border: 1px solid #444444;
+	color: var(--pw-color-fg-default);
+	font-family: var(--pw-font-sans);
+	font-size: 9px;
+	font-weight: 700;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	border-radius: 0;
+	box-shadow: none;
+}
+
+body.pw-bui-admin .button:hover,
+body.pw-bui-admin .button-secondary:hover {
+	border-color: #888888;
+	color: #ffffff;
+}
+
+body.pw-bui-admin .button-primary {
+	background: var(--pw-bui-br-primary-bg);
+	border: 1px solid var(--pw-bui-br-primary-border);
+	color: var(--pw-bui-br-primary-border);
+	text-shadow: none;
+	border-radius: 0;
+	box-shadow: none;
+}
+
+body.pw-bui-admin .button-primary:hover {
+	background: #1e4a7a;
+	border-color: var(--pw-bui-br-primary-border);
+	color: #ffffff;
+}
+
+body.pw-bui-admin .button-link-delete,
+body.pw-bui-admin .submitdelete {
+	color: var(--pw-color-accent-fg);
+}
+
+body.pw-bui-admin .button-link-delete:hover,
+body.pw-bui-admin .submitdelete:hover {
+	color: var(--pw-color-accent-emphasis);
+}
+
+/* Campos en metaboxes */
+body.pw-bui-admin .postbox input[type="text"],
+body.pw-bui-admin .postbox input[type="email"],
+body.pw-bui-admin .postbox input[type="url"],
+body.pw-bui-admin .postbox input[type="password"],
+body.pw-bui-admin .postbox input[type="number"],
+body.pw-bui-admin .postbox input[type="search"],
+body.pw-bui-admin .postbox textarea,
+body.pw-bui-admin .postbox select {
+	background: var(--pw-color-bg-inset) !important;
+	border: 1px solid var(--pw-color-border-emphasis) !important;
+	border-radius: 0 !important;
+	color: var(--pw-color-fg-default) !important;
+	font-family: var(--pw-font-sans) !important;
+	box-shadow: none !important;
+}
+
+body.pw-bui-admin .postbox input:focus,
+body.pw-bui-admin .postbox textarea:focus,
+body.pw-bui-admin .postbox select:focus {
+	border-color: var(--pw-color-focus-border) !important;
+	box-shadow: 0 0 0 1px var(--pw-color-focus-border) !important;
+	outline: none !important;
+}

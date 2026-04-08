@@ -47,6 +47,15 @@ class AssetsManager
 			$version,
 		);
 
+		if ($this->should_apply_admin_bridge($hook_suffix)) {
+			wp_enqueue_style(
+				$slug . "-admin-bridge",
+				$url . "css/backend-ui-admin-bridge.css",
+				[$slug . "-styles"],
+				$version,
+			);
+		}
+
 		// Package JS (theme toggle, tabs, toggles, segmented, tooltips, dismiss)
 		wp_enqueue_script(
 			$slug . "-scripts",
@@ -74,6 +83,28 @@ class AssetsManager
 	{
 		$screens = $this->config["screens"] ?? [];
 
+		if (empty($screens)) {
+			return false;
+		}
+
+		$current_screen = get_current_screen();
+		$screen_id = $current_screen ? $current_screen->id : $hook_suffix;
+
+		return in_array($screen_id, $screens, true) ||
+			in_array($hook_suffix, $screens, true);
+	}
+
+	/**
+	 * Native WP admin styling (body.pw-bui-admin) on the same screens as assets,
+	 * or on bridge_screens when set.
+	 */
+	private function should_apply_admin_bridge(string $hook_suffix): bool
+	{
+		if (empty($this->config["admin_bridge"])) {
+			return false;
+		}
+
+		$screens = $this->config["bridge_screens"] ?? $this->config["screens"] ?? [];
 		if (empty($screens)) {
 			return false;
 		}

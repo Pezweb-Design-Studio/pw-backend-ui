@@ -27,6 +27,8 @@ class BackendUI
 			"version" => "1.0.0",
 			"screens" => [],
 			"slug" => "pw-backend-ui",
+			"admin_bridge" => false,
+			"bridge_screens" => null,
 			"brand" => [
 				"name" => "",
 				"logo_url" => "",
@@ -43,9 +45,11 @@ class BackendUI
 	 * @param array $config {
 	 *     @type string   $assets_url  Full URL to the package assets/ dir (required).
 	 *     @type string   $version     Package version for cache busting. Default: '1.0.0'.
-	 *     @type string[] $screens     WP admin screen IDs where assets load.
-	 *     @type string   $slug        Unique slug used for CSS/JS handles. Default: 'pw-backend-ui'.
-	 *     @type array    $brand       { name: string, logo_url: string }
+	 *     @type string[] $screens        WP admin screen IDs where assets load.
+	 *     @type string   $slug           Unique slug used for CSS/JS handles. Default: 'pw-backend-ui'.
+	 *     @type bool     $admin_bridge   If true, enqueue backend-ui-admin-bridge.css and add body class pw-bui-admin on matching screens.
+	 *     @type string[]|null $bridge_screens Optional. Screen IDs for the bridge; defaults to screens when null.
+	 *     @type array    $brand          { name: string, logo_url: string }
 	 * }
 	 */
 	public static function init(array $config = []): self
@@ -60,6 +64,31 @@ class BackendUI
 	private function boot(): void
 	{
 		add_action("admin_enqueue_scripts", [$this->assets, "enqueue"]);
+		if (!empty($this->config["admin_bridge"])) {
+			add_filter("admin_body_class", [$this, "filter_admin_body_class"]);
+		}
+	}
+
+	/**
+	 * Adds pw-bui-admin for backend-ui-admin-bridge.css (native WP screens).
+	 */
+	public function filter_admin_body_class(string $classes): string
+	{
+		if (empty($this->config["admin_bridge"])) {
+			return $classes;
+		}
+
+		$screens = $this->config["bridge_screens"] ?? $this->config["screens"] ?? [];
+		if (empty($screens)) {
+			return $classes;
+		}
+
+		$screen = get_current_screen();
+		if (!$screen || !in_array($screen->id, $screens, true)) {
+			return $classes;
+		}
+
+		return $classes . " pw-bui-admin";
 	}
 
 	/**
@@ -226,6 +255,9 @@ class BackendUI
 								"tabs",
 								"separator",
 								"heading",
+								"section_label",
+								"stats_bar",
+								"data_table",
 								"paragraph",
 								"link",
 							];

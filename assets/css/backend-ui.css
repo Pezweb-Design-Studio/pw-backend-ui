@@ -3,49 +3,63 @@
 /**
  * pw/backend-ui — PW Design System
  *
- * Inspirado en Primer (GitHub). Tema dark por defecto, light disponible.
- * Todos los colores se definen como CSS variables en [data-pw-theme].
- * Tailwind CSS 4 maneja las utilities. Este archivo provee:
- *
- *   1. Design tokens (CSS variables) — dark y light
- *   2. WP admin resets dentro del wrapper
- *   3. Estilos de componentes que no pueden expresarse como utilities
- *   4. Animaciones y transiciones
+ * Tokens alineados con Pezweb Work OS (admin): Roboto, grises #1a1a1a…#3a3a3a,
+ * foco de campos azul #5ba4e5, acento rojo #dd0000, radios de campo 0.
+ * Tema light disponible. Ver también backend-ui-admin-bridge.css (body.pw-bui-admin).
  */
+
+/* Work OS — misma familia que pw-work-os */
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap");
 
 /* =========================================================================
    1. DESIGN TOKENS
    ========================================================================= */
 
 /**
- * DARK THEME (default)
- * Paleta PW: negro profundo, rojo de marca, grises, blancos.
+ * DARK THEME (default) — mapa Work OS → variables
  */
 [data-pw-theme="dark"],
 [data-pw-theme] {
-	/* Backgrounds */
-	--pw-color-bg-default: #000000; /* body / página principal */
-	--pw-color-bg-subtle: #0a0a0a; /* cajas, cards, surfaces */
-	--pw-color-bg-inset: #111111; /* inputs, textareas, selects */
-	--pw-color-bg-overlay: #161616; /* overlays, modales */
-	--pw-color-bg-emphasis: #333333; /* botones secundarios */
+	--pw-font-sans: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI",
+		"Noto Sans", Helvetica, Arial, sans-serif;
+	/* Solo códigos alfanuméricos / RUT (consumidor aplica .pw-bui-mono-codes) */
+	--pw-font-mono-codes: "Courier New", Courier, monospace;
+
+	--pw-radius-field: 0;
+	--pw-radius-button: 0;
+	--pw-radius-card: 0;
+	--pw-radius-control: 3px; /* checkbox custom */
+
+	/* Backgrounds — Work OS */
+	--pw-color-bg-default: #1a1a1a;
+	--pw-color-bg-subtle: #242424;
+	--pw-color-bg-inset: #2a2a2a;
+	--pw-color-bg-overlay: #1e1e1e;
+	--pw-color-bg-emphasis: #333333;
 
 	/* Borders */
-	--pw-color-border-default: #161616; /* líneas divisoras */
-	--pw-color-border-muted: #0f0f0f; /* bordes sutiles */
-	--pw-color-border-emphasis: #333333; /* bordes con más presencia */
+	--pw-color-border-default: #2e2e2e;
+	--pw-color-border-muted: #272727;
+	--pw-color-border-emphasis: #3a3a3a;
 
-	/* Foregrounds / Text */
-	--pw-color-fg-default: #fafafa; /* texto principal */
-	--pw-color-fg-muted: #6d6d6d; /* texto secundario */
-	--pw-color-fg-subtle: #444444; /* texto muy tenue */
-	--pw-color-fg-onEmphasis: #ffffff; /* texto sobre fondos de color */
+	/* Foregrounds */
+	--pw-color-fg-default: #e5e5e5;
+	--pw-color-fg-muted: #888888;
+	--pw-color-fg-subtle: #555555;
+	--pw-color-fg-onEmphasis: #ffffff;
 
-	/* Brand / Accent */
-	--pw-color-accent-fg: #ff0000; /* rojo PW */
-	--pw-color-accent-emphasis: #cc0000; /* rojo hover */
-	--pw-color-accent-subtle: #1a0000; /* rojo muy sutil (bg) */
-	--pw-color-accent-muted: #3a0000; /* rojo border */
+	/* Foco accesible en campos (Work OS) — distinto del acento marca */
+	--pw-color-focus-border: #5ba4e5;
+	--pw-color-focus-ring: rgba(91, 164, 229, 0.28);
+
+	/* Bordes de checkbox / controles pequeños */
+	--pw-color-control-border: #555555;
+
+	/* Brand / Accent — Work OS ~#dd0000 */
+	--pw-color-accent-fg: #dd0000;
+	--pw-color-accent-emphasis: #b80000;
+	--pw-color-accent-subtle: rgba(221, 0, 0, 0.1);
+	--pw-color-accent-muted: rgba(221, 0, 0, 0.35);
 
 	/* Semantic — Success */
 	--pw-color-success-fg: #3fb950;
@@ -73,34 +87,43 @@
 
 	/* Neutral scale (0=lightest, 9=darkest) */
 	--pw-color-neutral-0: #ffffff;
-	--pw-color-neutral-1: #fafafa;
-	--pw-color-neutral-2: #e0e0e0;
-	--pw-color-neutral-3: #aaaaaa;
-	--pw-color-neutral-4: #6d6d6d;
-	--pw-color-neutral-5: #444444;
-	--pw-color-neutral-6: #333333;
-	--pw-color-neutral-7: #1e1e1e;
-	--pw-color-neutral-8: #161616;
-	--pw-color-neutral-9: #0a0a0a;
+	--pw-color-neutral-1: #e5e5e5;
+	--pw-color-neutral-2: #c5c5c5;
+	--pw-color-neutral-3: #888888;
+	--pw-color-neutral-4: #666666;
+	--pw-color-neutral-5: #555555;
+	--pw-color-neutral-6: #444444;
+	--pw-color-neutral-7: #333333;
+	--pw-color-neutral-8: #2a2a2a;
+	--pw-color-neutral-9: #1a1a1a;
 
 	/* Shadows */
-	--pw-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.6);
-	--pw-shadow-md: 0 3px 8px rgba(0, 0, 0, 0.7);
-	--pw-shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.8);
+	--pw-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.45);
+	--pw-shadow-md: 0 3px 8px rgba(0, 0, 0, 0.55);
+	--pw-shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.65);
 
-	/* Header */
-	--pw-header-bg: #000000;
-	--pw-header-border: #161616;
+	/* Header — continuidad con página Work OS */
+	--pw-header-bg: #1a1a1a;
+	--pw-header-border: #2e2e2e;
 
 	/* Spinner */
-	--pw-spinner-track: #333333;
-	--pw-spinner-fill: #fafafa;
+	--pw-spinner-track: #444444;
+	--pw-spinner-fill: #e5e5e5;
 }
 
 /**
- * LIGHT THEME
+ * LIGHT THEME — misma geometría (radius 0 en campos); foco azul
  */
 [data-pw-theme="light"] {
+	--pw-font-sans: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI",
+		"Noto Sans", Helvetica, Arial, sans-serif;
+	--pw-font-mono-codes: "Courier New", Courier, monospace;
+
+	--pw-radius-field: 0;
+	--pw-radius-button: 0;
+	--pw-radius-card: 0;
+	--pw-radius-control: 3px;
+
 	/* Backgrounds */
 	--pw-color-bg-default: #ffffff;
 	--pw-color-bg-subtle: #f6f8fa;
@@ -119,9 +142,13 @@
 	--pw-color-fg-subtle: #8c959f;
 	--pw-color-fg-onEmphasis: #ffffff;
 
+	--pw-color-focus-border: #0969da;
+	--pw-color-focus-ring: rgba(9, 105, 218, 0.2);
+	--pw-color-control-border: #8c959f;
+
 	/* Brand */
-	--pw-color-accent-fg: #ff0000;
-	--pw-color-accent-emphasis: #cc0000;
+	--pw-color-accent-fg: #dd0000;
+	--pw-color-accent-emphasis: #b80000;
 	--pw-color-accent-subtle: #fff0f0;
 	--pw-color-accent-muted: #ffcccc;
 
@@ -191,9 +218,7 @@
 	width: calc(100% + 20px); /* recupera el espacio cancelado */
 	background: var(--pw-color-bg-default);
 	color: var(--pw-color-fg-default);
-	font-family:
-		-apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica,
-		Arial, sans-serif;
+	font-family: var(--pw-font-sans);
 	font-size: 14px;
 	line-height: 1.5;
 	-webkit-font-smoothing: antialiased;
@@ -236,7 +261,13 @@
 #pw-backend-ui-app input[type="password"],
 #pw-backend-ui-app input[type="number"],
 #pw-backend-ui-app input[type="date"],
+#pw-backend-ui-app input[type="datetime-local"],
+#pw-backend-ui-app input[type="time"],
 #pw-backend-ui-app input[type="search"],
+#pw-backend-ui-app input[type="tel"],
+#pw-backend-ui-app input[type="file"],
+#pw-backend-ui-app input[type="range"],
+#pw-backend-ui-app input[type="color"],
 #pw-backend-ui-app textarea,
 #pw-backend-ui-app select {
 	width: 100%;
@@ -267,10 +298,10 @@
    3. LAYOUT
    ========================================================================= */
 
-/* Header — siempre negro, independiente del tema */
+/* Header — Work OS: mismo tono que página (--pw-header-bg) */
 .pw-bui-header {
-	background: #000000 !important; /* negro PW fijo — no cambia con el tema */
-	border-bottom: 1px solid #161616 !important;
+	background: var(--pw-header-bg) !important;
+	border-bottom: 1px solid var(--pw-header-border) !important;
 	position: sticky;
 	top: 0;
 	z-index: 100;
@@ -363,9 +394,9 @@
 	width: 32px;
 	height: 32px;
 	background: transparent;
-	border: 1px solid #333333;
-	border-radius: 2px;
-	color: #6d6d6d;
+	border: 1px solid var(--pw-color-border-emphasis);
+	border-radius: var(--pw-radius-button);
+	color: var(--pw-color-fg-muted);
 	cursor: pointer;
 	transition:
 		color 0.15s,
@@ -376,9 +407,9 @@
 }
 
 .pw-bui-theme-toggle:hover {
-	color: #ffffff;
-	border-color: #555555;
-	background: #1a1a1a;
+	color: var(--pw-color-fg-onEmphasis);
+	border-color: var(--pw-color-control-border);
+	background: var(--pw-color-bg-overlay);
 }
 
 /* Moon icon (dark mode = mostrar moon para "cambiar a light") */
@@ -400,9 +431,9 @@
 .pw-bui-tabs-nav {
 	display: flex;
 	gap: 0;
-	border-bottom: 1px solid #161616;
+	border-bottom: 1px solid var(--pw-header-border);
 	padding: 0 24px;
-	background: #000000;
+	background: var(--pw-header-bg);
 }
 
 /* Main content area */
@@ -604,8 +635,8 @@
 	font-size: 13px;
 	font-weight: 500;
 	line-height: 20px;
-	padding: 5px 12px;
-	border-radius: 2px;
+	padding: 6px 12px;
+	border-radius: var(--pw-radius-button);
 	border: 1px solid transparent;
 	cursor: pointer;
 	transition:
@@ -621,7 +652,7 @@
 }
 
 .pw-bui-btn:focus-visible {
-	outline: 2px solid var(--pw-color-accent-fg);
+	outline: 2px solid var(--pw-color-focus-border);
 	outline-offset: 2px;
 }
 
@@ -725,7 +756,7 @@
 .pw-bui-card {
 	background: var(--pw-color-bg-subtle);
 	border: 1px solid var(--pw-color-border-default);
-	border-radius: 2px;
+	border-radius: var(--pw-radius-card);
 	overflow: hidden;
 }
 
@@ -791,16 +822,16 @@
 .pw-bui-select {
 	display: block;
 	width: 100%;
-	padding: 5px 10px;
+	padding: 6px 10px;
 	font-size: 13px;
 	font-family: inherit;
 	color: var(--pw-color-fg-default);
 	background: var(--pw-color-bg-inset);
-	border: 1px solid var(--pw-color-border-default);
-	border-radius: 2px;
+	border: 1px solid var(--pw-color-border-emphasis);
+	border-radius: var(--pw-radius-field);
 	transition:
-		border-color 0.15s,
-		box-shadow 0.15s;
+		border-color 0.12s,
+		box-shadow 0.12s;
 	outline: none;
 	-webkit-appearance: none;
 	appearance: none;
@@ -814,8 +845,8 @@
 .pw-bui-input:focus,
 .pw-bui-textarea:focus,
 .pw-bui-select:focus {
-	border-color: var(--pw-color-accent-fg);
-	box-shadow: 0 0 0 2px var(--pw-color-accent-muted);
+	border-color: var(--pw-color-focus-border);
+	box-shadow: 0 0 0 2px var(--pw-color-focus-ring);
 }
 
 .pw-bui-input:disabled,
@@ -834,6 +865,7 @@
 .pw-bui-input--error:focus,
 .pw-bui-textarea--error:focus,
 .pw-bui-select--error:focus {
+	border-color: var(--pw-color-danger-fg);
 	box-shadow: 0 0 0 2px var(--pw-color-danger-muted);
 }
 
@@ -844,7 +876,7 @@
 
 /* Select arrow */
 .pw-bui-select {
-	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%236d6d6d' d='M4.427 7.427l3.396 3.396a.25.25 0 00.354 0l3.396-3.396A.25.25 0 0011.396 7H4.604a.25.25 0 00-.177.427z'/%3E%3C/svg%3E");
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%23666666' d='M4.427 7.427l3.396 3.396a.25.25 0 00.354 0l3.396-3.396A.25.25 0 0011.396 7H4.604a.25.25 0 00-.177.427z'/%3E%3C/svg%3E");
 	background-repeat: no-repeat;
 	background-position: right 8px center;
 	background-size: 16px;
@@ -861,6 +893,61 @@
 [data-pw-theme="light"]
 	.pw-bui-input[type="date"]::-webkit-calendar-picker-indicator {
 	filter: none;
+}
+
+/* ── Input types sin estilo en Work OS (paridad visual) ── */
+#pw-backend-ui-app .pw-bui-input[type="file"] {
+	padding: 6px 8px;
+	cursor: pointer;
+}
+#pw-backend-ui-app .pw-bui-input[type="file"]::file-selector-button {
+	font-family: var(--pw-font-sans);
+	font-size: 12px;
+	font-weight: 500;
+	margin-right: 10px;
+	padding: 5px 12px;
+	border: 1px solid var(--pw-color-border-emphasis);
+	border-radius: var(--pw-radius-button);
+	background: var(--pw-color-bg-emphasis);
+	color: var(--pw-color-fg-default);
+	cursor: pointer;
+}
+#pw-backend-ui-app .pw-bui-input[type="file"]::file-selector-button:hover {
+	border-color: var(--pw-color-focus-border);
+	color: var(--pw-color-fg-onEmphasis);
+}
+
+#pw-backend-ui-app .pw-bui-input[type="range"] {
+	height: 28px;
+	padding: 0;
+	background: transparent;
+	border: none;
+	accent-color: var(--pw-color-accent-fg);
+}
+#pw-backend-ui-app .pw-bui-input[type="range"]:focus {
+	box-shadow: none;
+	outline: none;
+}
+#pw-backend-ui-app .pw-bui-input[type="range"]:focus-visible {
+	outline: 2px solid var(--pw-color-focus-border);
+	outline-offset: 2px;
+}
+
+#pw-backend-ui-app .pw-bui-input[type="color"] {
+	width: 48px;
+	height: 32px;
+	padding: 2px;
+	cursor: pointer;
+	border: 1px solid var(--pw-color-border-emphasis);
+	border-radius: var(--pw-radius-field);
+	background: var(--pw-color-bg-inset);
+}
+#pw-backend-ui-app .pw-bui-input[type="color"]::-webkit-color-swatch-wrapper {
+	padding: 0;
+}
+#pw-backend-ui-app .pw-bui-input[type="color"]::-webkit-color-swatch {
+	border: none;
+	border-radius: 0;
 }
 
 /* Help & error text */
@@ -896,13 +983,13 @@
 
 .pw-bui-checkbox-item__input,
 .pw-bui-radio-item__input {
-	width: 16px;
-	height: 16px;
+	width: 14px;
+	height: 14px;
 	flex-shrink: 0;
-	margin-top: 1px;
+	margin-top: 2px;
 	background: var(--pw-color-bg-inset);
-	border: 1px solid var(--pw-color-border-emphasis);
-	border-radius: 2px;
+	border: 1px solid var(--pw-color-control-border);
+	border-radius: var(--pw-radius-control);
 	cursor: pointer;
 	-webkit-appearance: none;
 	appearance: none;
@@ -925,30 +1012,31 @@
 .pw-bui-checkbox-item__input:checked::after {
 	content: "";
 	position: absolute;
-	top: 2px;
-	left: 5px;
-	width: 4px;
-	height: 7px;
-	border: 2px solid #fff;
+	left: 3px;
+	top: 0;
+	width: 5px;
+	height: 9px;
+	border: 2px solid var(--pw-color-fg-onEmphasis);
 	border-top: none;
 	border-left: none;
-	transform: rotate(45deg);
+	transform: rotate(40deg);
 }
 
 .pw-bui-radio-item__input:checked::after {
 	content: "";
 	position: absolute;
-	top: 3px;
-	left: 3px;
-	width: 8px;
-	height: 8px;
-	background: #fff;
+	top: 50%;
+	left: 50%;
+	width: 6px;
+	height: 6px;
+	margin: -3px 0 0 -3px;
+	background: var(--pw-color-fg-onEmphasis);
 	border-radius: 50%;
 }
 
 .pw-bui-checkbox-item__input:focus-visible,
 .pw-bui-radio-item__input:focus-visible {
-	outline: 2px solid var(--pw-color-accent-fg);
+	outline: 2px solid var(--pw-color-focus-border);
 	outline-offset: 2px;
 }
 
@@ -998,7 +1086,7 @@
 }
 
 .pw-bui-toggle:focus-visible {
-	outline: 2px solid var(--pw-color-accent-fg);
+	outline: 2px solid var(--pw-color-focus-border);
 	outline-offset: 2px;
 }
 
@@ -1108,7 +1196,7 @@
 
 /* focus */
 .pw-bui-switch__input:focus-visible + .pw-bui-switch__slider {
-	outline: 2px solid var(--pw-color-accent-fg);
+	outline: 2px solid var(--pw-color-focus-border);
 	outline-offset: 2px;
 }
 
@@ -1142,7 +1230,7 @@
 	margin-right: 24px;
 	font-size: 13px;
 	font-weight: 500;
-	color: #888888; /* gris fijo — header siempre oscuro */
+	color: var(--pw-color-fg-muted);
 	border: none;
 	border-bottom: 2px solid transparent;
 	background: transparent;
@@ -1157,21 +1245,21 @@
 }
 
 .pw-bui-tab:hover {
-	color: #ffffff;
-	border-bottom-color: #444444;
+	color: var(--pw-color-fg-onEmphasis);
+	border-bottom-color: var(--pw-color-border-emphasis);
 }
 
 .pw-bui-tab[aria-selected="true"],
 .pw-bui-tab--active {
-	color: #ffffff;
-	border-bottom-color: #ff0000;
+	color: var(--pw-color-fg-onEmphasis);
+	border-bottom-color: var(--pw-color-accent-fg);
 	font-weight: 600;
 }
 
 .pw-bui-tab:focus-visible {
-	outline: 2px solid #ff0000;
+	outline: 2px solid var(--pw-color-focus-border);
 	outline-offset: 2px;
-	border-radius: 2px;
+	border-radius: var(--pw-radius-button);
 }
 
 .pw-bui-tab-panel {
@@ -1185,7 +1273,7 @@
 	font-size: 11px;
 	font-weight: 500;
 	padding: 2px 7px;
-	border-radius: 2px;
+	border-radius: var(--pw-radius-button);
 	border: 1px solid transparent;
 	white-space: nowrap;
 	line-height: 18px;
@@ -1239,7 +1327,7 @@
 	align-items: flex-start;
 	gap: 10px;
 	padding: 12px 14px;
-	border-radius: 2px;
+	border-radius: var(--pw-radius-card);
 	border: 1px solid;
 	font-size: 13px;
 	line-height: 1.5;
@@ -1340,6 +1428,130 @@
 	letter-spacing: 0.05em;
 }
 
+/* Eyebrow — alineado con .pw-workos-section-title (Work OS) */
+.pw-bui-heading--eyebrow {
+	font-size: 9px;
+	font-weight: 700;
+	line-height: 1.4;
+	letter-spacing: 0.22em;
+	text-transform: uppercase;
+	color: var(--pw-color-fg-subtle);
+}
+
+/* Label de sección (p) — mismo estilo eyebrow */
+.pw-bui-section-label {
+	font-family: var(--pw-font-sans);
+	font-size: 9px;
+	font-weight: 700;
+	line-height: 1.4;
+	letter-spacing: 0.22em;
+	text-transform: uppercase;
+	color: var(--pw-color-fg-subtle);
+	margin: 0 0 8px;
+	padding: 0;
+	border: none;
+}
+
+/* Códigos / RUT — Work OS usa Courier solo para esto */
+.pw-bui-mono-codes {
+	font-family: var(--pw-font-mono-codes) !important;
+	letter-spacing: 0.04em;
+}
+
+/* ── STATS BAR (Work OS .pw-workos-stats-bar) ── */
+.pw-bui-stats-bar {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	align-items: stretch;
+	border-top: 1px solid var(--pw-color-border-default);
+	border-bottom: 1px solid var(--pw-color-border-default);
+	padding: 0;
+	gap: 0;
+}
+
+.pw-bui-stat {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	gap: 5px;
+	padding: 16px 32px 16px 0;
+	margin-right: 32px;
+	border-right: 1px solid var(--pw-color-border-muted);
+	flex-shrink: 0;
+}
+
+.pw-bui-stat:last-child {
+	border-right: none;
+	margin-right: 0;
+}
+
+.pw-bui-stat__label {
+	display: block;
+	font-family: var(--pw-font-sans);
+	font-size: 9px;
+	font-weight: 700;
+	letter-spacing: 0.16em;
+	text-transform: uppercase;
+	color: var(--pw-color-fg-subtle);
+}
+
+.pw-bui-stat__value {
+	display: block;
+	font-family: var(--pw-font-sans);
+	font-size: 20px;
+	font-weight: 400;
+	color: var(--pw-color-fg-muted);
+	line-height: 1;
+}
+
+.pw-bui-stat__breakdown {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 16px;
+	margin-top: 4px;
+	font-family: var(--pw-font-sans);
+	font-size: 10px;
+	font-weight: 400;
+	color: var(--pw-color-fg-subtle);
+}
+
+.pw-bui-stat__breakdown strong {
+	font-weight: 500;
+	color: var(--pw-color-fg-muted);
+}
+
+/* ── DATA TABLE (metabox / app — no wp-list-table) ── */
+.pw-bui-data-table {
+	border-collapse: collapse;
+	width: 100%;
+	font-family: var(--pw-font-sans);
+}
+
+.pw-bui-data-table th {
+	text-align: left;
+	vertical-align: middle;
+	padding: 7px 18px 7px 0;
+	width: 150px;
+	white-space: nowrap;
+	font-size: 9px;
+	font-weight: 700;
+	letter-spacing: 0.14em;
+	text-transform: uppercase;
+	color: var(--pw-color-fg-muted);
+}
+
+.pw-bui-data-table td {
+	vertical-align: middle;
+	padding: 5px 0;
+	font-size: 13px;
+	color: var(--pw-color-fg-default);
+}
+
+.pw-bui-data-table--full th {
+	width: auto;
+}
+
 /* ── PARAGRAPH ── */
 .pw-bui-paragraph {
 	font-size: 13px;
@@ -1401,7 +1613,7 @@
 	width: 100%;
 	height: 6px;
 	background: var(--pw-color-bg-emphasis);
-	border-radius: 2px;
+	border-radius: var(--pw-radius-field);
 	overflow: hidden;
 }
 .pw-bui-progress--md {
@@ -1414,7 +1626,7 @@
 .pw-bui-progress__bar {
 	height: 100%;
 	background: var(--pw-color-accent-fg);
-	border-radius: 2px;
+	border-radius: var(--pw-radius-field);
 	transition: width 0.3s ease;
 }
 .pw-bui-progress__bar--success {
@@ -1472,7 +1684,7 @@
 	display: inline-flex;
 	background: var(--pw-color-bg-emphasis);
 	border: 1px solid var(--pw-color-border-default);
-	border-radius: 2px;
+	border-radius: var(--pw-radius-button);
 	padding: 2px;
 	gap: 2px;
 }
@@ -1505,7 +1717,7 @@
 }
 
 .pw-bui-segmented__btn:focus-visible {
-	outline: 2px solid var(--pw-color-accent-fg);
+	outline: 2px solid var(--pw-color-focus-border);
 	outline-offset: 1px;
 }
 
@@ -1529,7 +1741,7 @@
 	color: var(--pw-color-fg-default);
 	background: transparent;
 	border: 1px solid var(--pw-color-border-default);
-	border-radius: 2px;
+	border-radius: var(--pw-radius-button);
 	cursor: pointer;
 	text-decoration: none;
 	transition:
@@ -1578,7 +1790,7 @@
 	color: var(--pw-color-fg-default);
 	font-size: 12px;
 	padding: 5px 9px;
-	border-radius: 2px;
+	border-radius: var(--pw-radius-button);
 	white-space: nowrap;
 	box-shadow: var(--pw-shadow-md);
 	pointer-events: none;
@@ -1600,7 +1812,7 @@
 /* ── SKELETON ── */
 .pw-bui-skeleton {
 	background: var(--pw-color-bg-emphasis);
-	border-radius: 2px;
+	border-radius: var(--pw-radius-button);
 	position: relative;
 	overflow: hidden;
 }
@@ -1736,12 +1948,12 @@
 	float: none;
 	margin: 0;
 	width: 200px;
-	padding: 5px 10px;
+	padding: 6px 10px;
 	font-size: 13px;
 	color: var(--pw-color-fg-default) !important;
 	background: var(--pw-color-bg-inset) !important;
-	border: 1px solid var(--pw-color-border-default) !important;
-	border-radius: 2px;
+	border: 1px solid var(--pw-color-border-emphasis) !important;
+	border-radius: var(--pw-radius-field);
 	box-shadow: none !important;
 	outline: none;
 	-webkit-appearance: none;
@@ -1754,8 +1966,8 @@
 	color: var(--pw-color-fg-subtle);
 }
 #pw-backend-ui-app p.search-box input[type="search"]:focus {
-	border-color: var(--pw-color-accent-fg) !important;
-	box-shadow: 0 0 0 2px var(--pw-color-accent-muted) !important;
+	border-color: var(--pw-color-focus-border) !important;
+	box-shadow: 0 0 0 2px var(--pw-color-focus-ring) !important;
 }
 #pw-backend-ui-app p.search-box input[type="submit"] {
 	float: none;

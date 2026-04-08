@@ -64,7 +64,7 @@ class ComponentRenderer
 	 *     @type string $label       Label text.
 	 *     @type string $value       Current value.
 	 *     @type string $placeholder Placeholder text.
-	 *     @type string $type        'text' | 'email' | 'password' | 'url' | 'number' | 'date' | 'search'. Default: 'text'.
+	 *     @type string $type        'text' | 'email' | 'password' | 'url' | 'number' | 'date' | 'search' | 'tel' | 'time' | 'datetime-local' | 'file' | 'range' | 'color'. Default: 'text'.
 	 *     @type string $min         Min value (for number/date).
 	 *     @type string $max         Max value (for number/date).
 	 *     @type string $help        Help text shown below input.
@@ -549,9 +549,10 @@ class ComponentRenderer
 	 * Render a heading (h1-h6).
 	 *
 	 * @param array $atts {
-	 *     @type string $text  Heading text.
-	 *     @type int    $level 1-6 for h1-h6. Default: 2.
-	 *     @type string $class Additional CSS classes.
+	 *     @type string $text    Heading text.
+	 *     @type int    $level   1-6 for h1-h6. Default: 2 (ignored when variant is eyebrow).
+	 *     @type string $variant '' | 'eyebrow' — Work OS section title style (renders as paragraph).
+	 *     @type string $class   Additional CSS classes.
 	 * }
 	 */
 	public function heading(array $atts = []): void
@@ -559,10 +560,74 @@ class ComponentRenderer
 		$atts = wp_parse_args($atts, [
 			"text" => "",
 			"level" => 2,
+			"variant" => "",
 			"class" => "",
 			"wrapper_class" => "",
 		]);
 		include __DIR__ . "/../../views/components/heading.php";
+	}
+
+	/**
+	 * Small caps section label (Work OS .pw-workos-section-title).
+	 *
+	 * @param array $atts {
+	 *     @type string $text           Label text.
+	 *     @type string $for            Optional id of associated control (renders as <label>).
+	 *     @type string $class          Extra classes on the label/p element.
+	 *     @type string $wrapper_class  Wrapper div class.
+	 * }
+	 */
+	public function section_label(array $atts = []): void
+	{
+		$atts = wp_parse_args($atts, [
+			"text" => "",
+			"for" => "",
+			"class" => "",
+			"wrapper_class" => "",
+		]);
+		include __DIR__ . "/../../views/components/section-label.php";
+	}
+
+	/**
+	 * Horizontal stats / metrics bar (Work OS .pw-workos-stats-bar).
+	 *
+	 * @param array $atts {
+	 *     @type array  $items Each: [ 'label' => string, 'value' => string, 'breakdown' => optional HTML string ]
+	 *     @type string $class
+	 *     @type string $wrapper_class
+	 * }
+	 */
+	public function stats_bar(array $atts = []): void
+	{
+		$atts = wp_parse_args($atts, [
+			"items" => [],
+			"class" => "",
+			"wrapper_class" => "",
+		]);
+		include __DIR__ . "/../../views/components/stats-bar.php";
+	}
+
+	/**
+	 * Data table for app content (Work OS .pw-workos-table), not wp-list-table.
+	 *
+	 * @param array $atts {
+	 *     @type string[]     $headers            Column headers.
+	 *     @type string[][]   $rows               Each row = array of cell strings (escaped).
+	 *     @type bool         $full_width_headers If true, th width is auto (class pw-bui-data-table--full).
+	 *     @type string       $class
+	 *     @type string       $wrapper_class
+	 * }
+	 */
+	public function data_table(array $atts = []): void
+	{
+		$atts = wp_parse_args($atts, [
+			"headers" => [],
+			"rows" => [],
+			"full_width_headers" => false,
+			"class" => "",
+			"wrapper_class" => "",
+		]);
+		include __DIR__ . "/../../views/components/data-table.php";
 	}
 
 	/**
