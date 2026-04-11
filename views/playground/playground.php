@@ -9,13 +9,10 @@ $ui = $bui->ui();
 if (!function_exists("pw_pg_section")):
 	function pw_pg_section(string $title, string $desc = ""): void
 	{
-		echo '<div style="margin-bottom:24px;"><h3 style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--pw-color-fg-muted);margin:0 0 12px;padding-bottom:8px;border-bottom:1px solid var(--pw-color-border-default);">' .
-			esc_html($title) .
-			"</h3>";
+		echo '<div class="pw-bui-pg-section">';
+		echo '<h3 class="pw-bui-pg-section__title">' . esc_html($title) . "</h3>";
 		if ($desc) {
-			echo '<p style="font-size:12px;color:var(--pw-color-fg-muted);margin:0 0 12px;">' .
-				esc_html($desc) .
-				"</p>";
+			echo '<p class="pw-bui-pg-section__desc">' . esc_html($desc) . "</p>";
 		}
 	}
 	function pw_pg_section_end(): void
@@ -25,11 +22,9 @@ if (!function_exists("pw_pg_section")):
 	function pw_pg_row(string $lbl = ""): void
 	{
 		if ($lbl) {
-			echo '<p style="font-size:11px;color:var(--pw-color-fg-subtle);margin:0 0 6px;">' .
-				esc_html($lbl) .
-				"</p>";
+			echo '<p class="pw-bui-section-label">' . esc_html($lbl) . "</p>";
 		}
-		echo '<div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:16px;">';
+		echo '<div class="pw-bui-pg-row">';
 	}
 	function pw_pg_row_end(): void
 	{
@@ -446,7 +441,7 @@ $ui->tab_panel([
 			],
 		]);
 		echo "</nav>";
-		echo '<div style="padding:20px;">';
+		echo '<div class="pw-bui-sidenav-content">';
 		$ui->heading(["text" => "Panel de contenido", "level" => 3]);
 		$ui->paragraph([
 			"text" =>
