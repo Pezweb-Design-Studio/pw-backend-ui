@@ -479,7 +479,7 @@ $ui->tab_panel([
 
 		pw_pg_section("Side Nav (navegación lateral tipo WP Settings)");
 		echo '<div style="display:grid;grid-template-columns:200px 1fr;border:1px solid var(--pw-color-border-default);border-radius:2px;overflow:hidden;">';
-		echo '<nav class="pw-bui-sidenav" style="min-height:auto;position:static;">';
+		echo '<nav class="pw-bui-sidenav" style="min-height:auto;position:static;border-right:none;">';
 		$ui->side_nav([
 			"items" => [
 				["label" => "Conexión", "href" => "#", "active" => true],
