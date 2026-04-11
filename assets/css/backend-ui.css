@@ -2613,27 +2613,33 @@
 	box-shadow: none !important;
 }
 
-/* ── PLAYGROUND SECTION HELPERS ── */
+/* ── PLAYGROUND SECTION HELPERS ──
+   The playground IS the visual reference for how plugins look.
+   Section rhythm: title → 1.2rem → thin grey line → 1.2rem → content
+   Content never adds its own horizontal padding — the rail comes from .pw-bui-main.
+   ────────────────────────────────────────────────────────────────────── */
 .pw-bui-pg-section {
-	margin-bottom: 24px;
+	margin-bottom: 2.4rem;
 }
 
 .pw-bui-pg-section__title {
+	font-family: inherit;
 	font-size: 10px;
 	font-weight: 600;
 	text-transform: uppercase;
 	letter-spacing: 0.08em;
 	color: var(--pw-color-fg-muted);
-	margin: 0 0 12px;
-	padding-bottom: 8px;
-	border-bottom: 1px solid var(--pw-color-border-default);
-	font-family: inherit;
+	margin: 0;
+	padding-bottom: 1.2rem;
+	border-bottom: 1px solid var(--pw-color-border-emphasis);
+	margin-bottom: 1.2rem;
+	display: block;
 }
 
 .pw-bui-pg-section__desc {
 	font-size: 12px;
 	color: var(--pw-color-fg-muted);
-	margin: 0 0 12px;
+	margin: 0 0 1.2rem;
 	line-height: 1.5;
 }
 
@@ -2641,8 +2647,8 @@
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
-	gap: 8px;
-	margin-bottom: 16px;
+	gap: var(--pw-space-2);
+	margin-bottom: var(--pw-space-4);
 }
 
 /* ── ACCORDION ──────────────────────────────────────────────────────────── */
