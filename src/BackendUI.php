@@ -223,6 +223,7 @@ class BackendUI
 				["slug" => "feedback", "label" => "Feedback"],
 				["slug" => "navigation", "label" => "Navegación"],
 				["slug" => "layout", "label" => "Tipo & Layout"],
+				["slug" => "containers", "label" => "Contenedores"],
 			],
 			"content" => function (BackendUI $bui) {
 				include __DIR__ . "/../views/playground/playground.php";

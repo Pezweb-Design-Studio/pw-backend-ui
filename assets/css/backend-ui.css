@@ -563,7 +563,7 @@
 .pw-bui-layout--with-sidenav {
 	grid-template-columns: 200px 1fr;
 	gap: 0;
-	align-items: start;
+	align-items: stretch;
 }
 
 @media (max-width: 900px) {
@@ -579,6 +579,7 @@
 	position: sticky;
 	top: 120px; /* debajo del header + tabs */
 	border-right: 1px solid var(--pw-color-border-default);
+	align-self: stretch;
 }
 
 .pw-bui-sidenav__group {
@@ -1833,7 +1834,7 @@
 	height: 9px;
 	margin-left: 3px;
 	background: none;
-	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10' fill='none' stroke='currentColor' stroke-width='1.2'%3E%3Cpath d='M4 2H2v6h6V6M6 2h2v2M8 2L5 5'/%3E%3C/svg%3E");
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10' fill='none' stroke='currentColor' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M1 1H9V9'/%3E%3Cpath d='M9 1L1 9'/%3E%3C/svg%3E");
 	background-size: 9px 9px;
 	background-repeat: no-repeat;
 	background-position: center;
@@ -2568,7 +2569,7 @@
 #pw-backend-ui-app .wp-list-table .row-actions a {
 	color: var(--pw-color-fg-subtle);
 	text-transform: uppercase;
-	font-size: 9px;
+	font-size: 8px;
 	font-weight: 700;
 	letter-spacing: 0.06em;
 }
@@ -2655,8 +2656,38 @@
 	background: var(--pw-color-bg-emphasis) !important;
 	border-color: var(--pw-color-border-emphasis) !important;
 	color: var(--pw-color-fg-default) !important;
-	box-shadow: none !important;
 	text-shadow: none !important;
+	box-shadow: none !important;
+	cursor: pointer;
+	transition: background 0.12s, border-color 0.12s;
+}
+
+/* Aplicar button (bulkactions submit) — matches BUI secondary button style */
+#pw-backend-ui-app .bulkactions input[type="submit"] {
+	height: 28px !important;
+	padding: 0 12px !important;
+	border-radius: 0 !important;
+	border: 1px solid var(--pw-color-border-emphasis) !important;
+	background: var(--pw-color-bg-emphasis) !important;
+	color: var(--pw-color-fg-default) !important;
+	font-family: inherit !important;
+	font-size: 11px !important;
+	font-weight: 600 !important;
+	text-transform: uppercase !important;
+	letter-spacing: 0.1em !important;
+	text-shadow: none !important;
+	box-shadow: none !important;
+	cursor: pointer !important;
+	transition: background 0.12s, border-color 0.12s !important;
+	line-height: 1 !important;
+}
+#pw-backend-ui-app .bulkactions input[type="submit"]:hover {
+	background: var(--pw-color-bg-overlay) !important;
+	border-color: var(--pw-color-border-emphasis) !important;
+}
+#pw-backend-ui-app .bulkactions input[type="submit"]:disabled {
+	opacity: 0.4 !important;
+	cursor: not-allowed !important;
 }
 
 #pw-backend-ui-app .button:hover,
@@ -2681,6 +2712,7 @@
 	border-color: var(--pw-color-border-emphasis) !important;
 	color: var(--pw-color-fg-default) !important;
 	box-shadow: none !important;
+	border-radius: 0 !important;
 }
 
 /* Input de página actual */
