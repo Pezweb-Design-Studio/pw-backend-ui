@@ -478,7 +478,7 @@ $ui->tab_panel([
 		pw_pg_section_end();
 
 		pw_pg_section("Side Nav (navegación lateral tipo WP Settings)");
-		echo '<div style="display:grid;grid-template-columns:200px 1fr;border:1px solid var(--pw-color-border-default);align-items:stretch;overflow:hidden;">';
+		echo '<div style="display:grid;grid-template-columns:200px 1fr;align-items:stretch;">';
 		echo '<nav class="pw-bui-sidenav" style="min-height:0;position:static;">';
 		$ui->side_nav([
 			"items" => [
@@ -769,7 +769,6 @@ $ui->tab_panel([
 
 // ── TAB 6: CONTENEDORES & ESPACIADO ─────────────────────────────────────────
 
-// ── Inline icon library (directional arrows) ─────────────────────────────────
 if (!function_exists("pw_pg_arrow")):
 	function pw_pg_arrow(string $dir, int $size = 10): string
 	{
@@ -785,7 +784,7 @@ if (!function_exists("pw_pg_arrow")):
 		];
 		$d = $paths[$dir] ?? $paths["right"];
 		return sprintf(
-			'<svg xmlns="http://www.w3.org/2000/svg" width="%1$d" height="%1$d" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;" aria-hidden="true"><path d="%2$s"/></svg>',
+			'<svg xmlns="http://www.w3.org/2000/svg" width="%1$d" height="%1$d" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="square" stroke-linejoin="miter" style="display:inline-block;vertical-align:middle;" aria-hidden="true"><path d="%2$s"/></svg>',
 			$size,
 			esc_attr($d)
 		);
@@ -795,123 +794,226 @@ endif;
 $ui->tab_panel([
 	"slug"    => "containers",
 	"content" => function () use ($ui) {
-		pw_pg_section("Librería de iconos — flechas");
+
+		// ── 1. ICON LIBRARY ───────────────────────────────────────────────────
+		pw_pg_section(
+			"Librería de iconos — flechas",
+			"1px stroke, sin redondeo. Hereda color: currentColor. Añadir más íconos aquí conforme crezca el sistema.",
+		);
 		$arrow_dirs = [
 			"right"        => "Derecha",
 			"left"         => "Izquierda",
 			"up"           => "Arriba",
 			"down"         => "Abajo",
-			"top-right"    => "Superior derecha",
-			"top-left"     => "Superior izquierda",
-			"bottom-right" => "Inferior derecha",
-			"bottom-left"  => "Inferior izquierda",
+			"top-right"    => "Sup. derecha",
+			"top-left"     => "Sup. izquierda",
+			"bottom-right" => "Inf. derecha",
+			"bottom-left"  => "Inf. izquierda",
 		];
 		pw_pg_row();
 		foreach ($arrow_dirs as $dir => $label) {
-			echo '<span style="display:inline-flex;flex-direction:column;align-items:center;gap:4px;padding:8px;border:1px solid var(--pw-color-border-default);min-width:60px;">';
+			echo '<span style="display:inline-flex;flex-direction:column;align-items:center;gap:4px;padding:8px;border:1px solid var(--pw-color-border-default);min-width:64px;">';
 			echo '<span style="color:var(--pw-color-fg-default);">' . pw_pg_arrow($dir, 14) . "</span>";
-			echo '<span style="font-size:8px;color:var(--pw-color-fg-subtle);text-transform:uppercase;letter-spacing:0.06em;">' .
+			echo '<span style="font-size:7px;color:var(--pw-color-fg-subtle);text-transform:uppercase;letter-spacing:0.06em;">' .
 				esc_html($label) .
 				"</span>";
 			echo "</span>";
 		}
 		pw_pg_row_end();
-		echo '<p style="font-size:11px;color:var(--pw-color-fg-subtle);margin-top:8px;">Uso: <code style="font-size:10px;">pw_pg_arrow(\'right\', 12)</code> — hereda <code style="font-size:10px;">color:currentColor</code>.</p>';
+		echo '<p style="font-size:11px;color:var(--pw-color-fg-subtle);margin-top:8px;">Uso: <code style="font-size:10px;color:var(--pw-color-fg-default);">pw_pg_arrow(\'right\', 12)</code></p>';
 		pw_pg_section_end();
 
+		// ── 2. SPACING TOKENS ─────────────────────────────────────────────────
 		pw_pg_section(
 			"Tokens de espaciado",
-			"Escala de 4px. Usar siempre estos tokens para gaps y margins.",
+			"Escala de 4px. Usar siempre estos tokens — nunca valores arbitrarios.",
 		);
 		echo '<table class="wp-list-table widefat fixed striped" style="width:auto;max-width:480px;">';
 		echo "<thead><tr><th>Token</th><th>Valor</th><th>Uso típico</th></tr></thead><tbody>";
-		$spacing = [
-			["--pw-space-1", "4px", "Gap interno, separación entre íconos"],
-			["--pw-space-2", "8px", "Gap entre controles, row-actions"],
-			["--pw-space-3", "12px", "Padding lateral de ítems nav"],
-			["--pw-space-4", "16px", "Card padding, form-gap interno"],
-			["--pw-space-5", "20px", "Margin entre bloques dentro de un card"],
-			["--pw-space-6", "24px", "Content padding, layout gap"],
-			["--pw-space-8", "32px", "Separación entre secciones de página"],
+		$spacing_tokens = [
+			["--pw-space-1",         "4px",  "Separación entre íconos, gap interno"],
+			["--pw-space-2",         "8px",  "Gap entre controles, label a input"],
+			["--pw-space-3",         "12px", "Padding lateral de ítems nav"],
+			["--pw-space-4",         "16px", "Card padding, form-gap"],
+			["--pw-space-5",         "20px", "Espacio entre bloques dentro de card"],
+			["--pw-space-6",         "24px", "Content padding, layout-gap"],
+			["--pw-space-8",         "32px", "Separación entre secciones de página"],
 			["--pw-content-padding", "24px", "Padding del área de contenido principal"],
-			["--pw-layout-gap", "24px", "Gap entre columnas del layout grid"],
-			["--pw-card-padding", "16px", "Padding interior de cards"],
-			["--pw-form-gap", "16px", "Gap vertical entre campos de formulario"],
+			["--pw-layout-gap",      "24px", "Gap entre columnas del grid"],
+			["--pw-card-padding",    "16px", "Padding interior de cards"],
+			["--pw-form-gap",        "16px", "Gap vertical entre campos de formulario"],
 		];
-		foreach ($spacing as [$token, $val, $uso]) {
+		foreach ($spacing_tokens as [$tok, $val, $uso]) {
 			echo "<tr>";
-			echo '<td><code style="font-size:11px;color:var(--pw-color-fg-default);">' .
-				esc_html($token) .
-				"</code></td>";
+			echo '<td><code style="font-size:11px;color:var(--pw-color-fg-default);">' . esc_html($tok) . "</code></td>";
 			echo "<td>";
-			echo '<span style="display:inline-block;width:' .
-				esc_attr($val) .
-				';height:10px;background:var(--pw-color-accent-fg);vertical-align:middle;margin-right:6px;"></span>';
-			echo '<span style="font-size:11px;color:var(--pw-color-fg-muted);">' .
-				esc_html($val) .
-				"</span>";
+			echo '<span style="display:inline-block;width:' . esc_attr($val) .
+				';height:9px;background:var(--pw-color-accent-fg);vertical-align:middle;margin-right:6px;"></span>';
+			echo '<span style="font-size:11px;color:var(--pw-color-fg-muted);">' . esc_html($val) . "</span>";
 			echo "</td>";
-			echo '<td style="font-size:11px;color:var(--pw-color-fg-subtle);">' .
-				esc_html($uso) .
-				"</td>";
+			echo '<td style="font-size:11px;color:var(--pw-color-fg-subtle);">' . esc_html($uso) . "</td>";
 			echo "</tr>";
 		}
 		echo "</tbody></table>";
 		pw_pg_section_end();
 
+		// ── 3. SPACING RULES ───────────────────────────────────────────────────
 		pw_pg_section("Reglas de espaciado entre elementos");
 		echo '<table class="wp-list-table widefat fixed striped" style="width:auto;max-width:580px;">';
-		echo "<thead><tr><th>Contexto</th><th>Token recomendado</th><th>Valor</th></tr></thead><tbody>";
-		$rules = [
-			["Heading " . pw_pg_arrow("down", 9) . " Párrafo", "--pw-space-2", "8px"],
-			["Párrafo " . pw_pg_arrow("down", 9) . " Párrafo", "--pw-space-2", "8px"],
-			["Imagen " . pw_pg_arrow("down", 9) . " Caption", "6px (manual)", "6px"],
-			["Caption " . pw_pg_arrow("down", 9) . " Párrafo siguiente", "--pw-card-padding", "16px"],
-			["Card " . pw_pg_arrow("right", 9) . " Card (gap horizontal)", "--pw-layout-gap", "24px"],
-			["Sección " . pw_pg_arrow("down", 9) . " Sección (bloques de página)", "--pw-space-8", "32px"],
-			["Label " . pw_pg_arrow("down", 9) . " Control de formulario", "--pw-space-2", "8px"],
-			["Campo " . pw_pg_arrow("down", 9) . " Campo", "--pw-form-gap", "16px"],
+		echo "<thead><tr><th>Contexto</th><th>Token</th><th>Valor</th></tr></thead><tbody>";
+		$spacing_rules = [
+			["Heading " . pw_pg_arrow("down", 9) . " Párrafo",                   "--pw-space-2",    "8px"],
+			["Párrafo " . pw_pg_arrow("down", 9) . " Párrafo",                   "--pw-space-2",    "8px"],
+			["Imagen " . pw_pg_arrow("down", 9) . " Caption",                    "6px (manual)",   "6px"],
+			["Caption " . pw_pg_arrow("down", 9) . " Siguiente párrafo",         "--pw-card-padding", "16px"],
+			["Card " . pw_pg_arrow("right", 9) . " Card (gap horizontal)",       "--pw-layout-gap", "24px"],
+			["Sección " . pw_pg_arrow("down", 9) . " Sección",                   "--pw-space-8",   "32px"],
+			["Label " . pw_pg_arrow("down", 9) . " Control de formulario",        "--pw-space-2",    "8px"],
+			["Campo " . pw_pg_arrow("down", 9) . " Campo",                        "--pw-form-gap",  "16px"],
+			["Contenedor " . pw_pg_arrow("right", 9) . " Contenedor hermano",    "--pw-layout-gap", "24px"],
 		];
-		foreach ($rules as [$ctx, $token, $val]) {
+		foreach ($spacing_rules as [$ctx, $tok, $val]) {
 			echo "<tr>";
 			echo '<td style="font-size:11px;">' . $ctx . "</td>";
-			echo '<td><code style="font-size:10px;color:var(--pw-color-fg-default);">' .
-				esc_html($token) .
-				"</code></td>";
-			echo '<td style="font-size:11px;color:var(--pw-color-fg-subtle);">' .
-				esc_html($val) .
-				"</td>";
+			echo '<td><code style="font-size:10px;color:var(--pw-color-fg-default);">' . esc_html($tok) . "</code></td>";
+			echo '<td style="font-size:11px;color:var(--pw-color-fg-subtle);">' . esc_html($val) . "</td>";
 			echo "</tr>";
 		}
 		echo "</tbody></table>";
 		pw_pg_section_end();
 
+		// ── 4. CONTENEDOR BÁSICO + ANIDADO ────────────────────────────────────
 		pw_pg_section(
 			"Contenedor básico y profundidad anidada",
-			"Cada nivel de anidamiento usa un fondo más oscuro y un borde más sutil.",
+			"Cada nivel usa un tono más oscuro; referencia para cualquier contenedor del sistema.",
 		);
 		echo '<div style="border:1px solid var(--pw-color-border-default);padding:var(--pw-card-padding);background:var(--pw-color-bg-subtle);">';
-		$ui->paragraph(["text" => "Nivel 0 — contenedor raíz. bg-subtle, border-default."]);
+		$ui->paragraph(["text" => "Nivel 0 — raíz. bg-subtle / border-default."]);
 		echo '<div style="margin-top:var(--pw-card-padding);border:1px solid var(--pw-color-border-muted);padding:var(--pw-card-padding);background:var(--pw-color-bg-inset);">';
-		$ui->paragraph(["text" => "Nivel 1 — anidado. bg-inset, border-muted.", "variant" => "muted"]);
+		$ui->paragraph(["text" => "Nivel 1 — anidado. bg-inset / border-muted.", "variant" => "muted"]);
 		echo '<div style="margin-top:var(--pw-card-padding);border:1px solid var(--pw-color-border-muted);padding:var(--pw-card-padding);background:var(--pw-color-bg-emphasis);">';
-		$ui->paragraph(["text" => "Nivel 2 — más profundo. bg-emphasis, border-muted.", "variant" => "muted"]);
+		$ui->paragraph(["text" => "Nivel 2 — bg-emphasis / border-muted.", "variant" => "muted"]);
 		echo '<div style="margin-top:var(--pw-card-padding);border:1px solid var(--pw-color-border-emphasis);padding:var(--pw-card-padding);background:var(--pw-color-bg-overlay);">';
-		$ui->paragraph(["text" => "Nivel 3 — hoja. bg-overlay, border-emphasis.", "variant" => "muted"]);
+		$ui->paragraph(["text" => "Nivel 3 — hoja. bg-overlay / border-emphasis.", "variant" => "muted"]);
+		echo "</div></div></div></div>";
+		pw_pg_section_end();
+
+		// ── 5. FULL-BLEED VERTICAL DIVIDER / MENU NAV ─────────────────────────
+		pw_pg_section(
+			"Línea vertical full-bleed — patrón menu/nav",
+			"El sidenav usa únicamente border-right como divisor. Sin contenedor exterior. Aplicable a cualquier layout de nav lateral.",
+		);
+		echo '<div style="display:grid;grid-template-columns:180px 1fr;align-items:stretch;min-height:160px;">';
+		echo '<div style="border-right:1px solid var(--pw-color-border-default);padding:8px 0;">';
+		$nav_items = ["Dashboard", "Plugins", "Ajustes", "Usuarios"];
+		foreach ($nav_items as $i => $item) {
+			$active = $i === 0
+				? "background:var(--pw-color-bg-emphasis);color:var(--pw-color-fg-default);"
+				: "color:var(--pw-color-fg-muted);";
+			echo '<div style="padding:6px 12px;font-size:10px;text-transform:uppercase;letter-spacing:0.06em;cursor:pointer;' .
+				$active .
+				'">' .
+				esc_html($item) .
+				"</div>";
+		}
+		echo "</div>";
+		echo '<div style="padding:var(--pw-card-padding);">';
+		$ui->heading(["text" => "Contenido del panel", "level" => 4]);
+		echo '<div style="margin-top:8px;">';
+		$ui->paragraph([
+			"text" =>
+				"Un único border-right separa nav de contenido. La línea sangra hasta el fondo del grid, sin marcos adicionales.",
+			"variant" => "muted",
+		]);
+		echo "</div></div></div>";
+		pw_pg_section_end();
+
+		// ── 6. OFF-CANVAS ─────────────────────────────────────────────────────
+		pw_pg_section(
+			"Off-canvas — panel deslizante",
+			"Panel oculto que entra desde la izquierda con un botón. Base para menús móviles, filtros laterales y drawers.",
+		);
+		echo '<div id="pw-pg-oc-wrap" style="position:relative;overflow:hidden;border:1px solid var(--pw-color-border-default);min-height:180px;background:var(--pw-color-bg-default);">';
+		echo '<div id="pw-pg-oc-panel" style="position:absolute;top:0;left:-220px;width:220px;height:100%;background:var(--pw-color-bg-subtle);border-right:1px solid var(--pw-color-border-default);transition:left 0.2s ease;z-index:5;padding:8px 0;">';
+		foreach (["Inicio", "Catálogo", "Pedidos", "Configuración"] as $item) {
+			echo '<div style="padding:7px 16px;font-size:10px;text-transform:uppercase;letter-spacing:0.06em;color:var(--pw-color-fg-muted);">' .
+				esc_html($item) .
+				"</div>";
+		}
+		echo "</div>";
+		echo '<div id="pw-pg-oc-main" style="padding:var(--pw-card-padding);transition:margin-left 0.2s ease;">';
+		echo '<button type="button" onclick="(function(){var p=document.getElementById(\'pw-pg-oc-panel\'),m=document.getElementById(\'pw-pg-oc-main\'),o=(p.style.left===\'0px\'||p.style.left===\'0\');p.style.left=o?\'-220px\':\'0px\';m.style.marginLeft=o?\'0\':\'220px\';})()" style="font-family:inherit;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;padding:0 12px;height:28px;border:1px solid var(--pw-color-border-emphasis);background:var(--pw-color-bg-emphasis);color:var(--pw-color-fg-default);cursor:pointer;">';
+		echo pw_pg_arrow("right", 9) . " &nbsp;Toggle panel</button>";
+		echo '<div style="margin-top:16px;">';
+		$ui->paragraph([
+			"text" =>
+				"El panel se desliza desde fuera del viewport. Útil para menús móviles, drawers de filtros y configuración contextual.",
+			"variant" => "muted",
+		]);
+		echo "</div></div></div>";
+		pw_pg_section_end();
+
+		// ── 7. APP SHELL (HOLY GRAIL) ──────────────────────────────────────────
+		pw_pg_section(
+			"App shell — header / nav / main / footer",
+			"Layout completo de aplicación. La zona central usa grid 3 columnas: nav lateral, contenido principal, sidebar derecho.",
+		);
+		echo '<div style="border:1px solid var(--pw-color-border-default);display:flex;flex-direction:column;min-height:220px;background:var(--pw-color-bg-default);">';
+		echo '<div style="border-bottom:1px solid var(--pw-color-border-default);padding:8px 16px;background:var(--pw-color-bg-inset);font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--pw-color-fg-subtle);">Header</div>';
+		echo '<div style="display:grid;grid-template-columns:140px 1fr 120px;flex:1;min-height:0;align-items:stretch;">';
+		echo '<div style="border-right:1px solid var(--pw-color-border-default);padding:8px 0;">';
+		foreach (["Sección A", "Sección B", "Sección C"] as $s) {
+			echo '<div style="padding:5px 12px;font-size:9px;text-transform:uppercase;letter-spacing:0.06em;color:var(--pw-color-fg-subtle);">' .
+				esc_html($s) .
+				"</div>";
+		}
+		echo "</div>";
+		echo '<div style="padding:var(--pw-card-padding);">';
+		$ui->paragraph(["text" => "Contenido principal. flex:1 llena el espacio disponible entre nav y sidebar."]);
+		echo "</div>";
+		echo '<div style="border-left:1px solid var(--pw-color-border-default);padding:8px 10px;font-size:9px;color:var(--pw-color-fg-subtle);">';
+		$ui->paragraph(["text" => "Sidebar", "variant" => "muted"]);
 		echo "</div>";
 		echo "</div>";
-		echo "</div>";
+		echo '<div style="border-top:1px solid var(--pw-color-border-default);padding:6px 16px;background:var(--pw-color-bg-inset);font-size:10px;text-transform:uppercase;letter-spacing:0.08em;color:var(--pw-color-fg-subtle);">Footer</div>';
 		echo "</div>";
 		pw_pg_section_end();
 
-		pw_pg_section("Grid 2 columnas (1fr 1fr)", "Gap uniforme: var(--pw-layout-gap) = 24px.");
+		// ── 8. SPLIT PANES ────────────────────────────────────────────────────
+		pw_pg_section(
+			"Split panes — vista maestra / detalle",
+			"Dos paneles de igual altura separados por una línea. Patrón lista-detalle, diff viewer, comparativa.",
+		);
+		echo '<div style="display:grid;grid-template-columns:1fr 1fr;align-items:stretch;border:1px solid var(--pw-color-border-default);min-height:160px;">';
+		echo '<div style="border-right:1px solid var(--pw-color-border-default);padding:var(--pw-card-padding);">';
+		$ui->heading(["text" => "Panel izquierdo", "level" => 4]);
+		echo '<div style="margin-top:8px;">';
+		foreach (["Entrada A", "Entrada B", "Entrada C"] as $e) {
+			echo '<div style="padding:5px 0;border-bottom:1px solid var(--pw-color-border-muted);font-size:11px;color:var(--pw-color-fg-muted);">' .
+				esc_html($e) .
+				"</div>";
+		}
+		echo "</div></div>";
+		echo '<div style="padding:var(--pw-card-padding);">';
+		$ui->heading(["text" => "Detalle", "level" => 4]);
+		echo '<div style="margin-top:8px;">';
+		$ui->paragraph([
+			"text" =>
+				"Selecciona un ítem para ver el detalle. Los dos paneles comparten altura determinada por el contenido más alto.",
+			"variant" => "muted",
+		]);
+		echo "</div></div></div>";
+		pw_pg_section_end();
+
+		// ── 9. GRID 2 COLUMNAS ────────────────────────────────────────────────
+		pw_pg_section("Grid 2 columnas (1fr 1fr)", "Gap uniforme var(--pw-layout-gap) = 24px.");
 		echo '<div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--pw-layout-gap);">';
 		foreach (["Columna A", "Columna B"] as $col) {
 			echo '<div style="border:1px solid var(--pw-color-border-default);padding:var(--pw-card-padding);background:var(--pw-color-bg-subtle);">';
 			$ui->heading(["text" => $col, "level" => 4]);
 			echo '<div style="margin-top:8px;">';
 			$ui->paragraph([
-				"text" => "$col — peso igual. Útil para formularios en dos columnas.",
+				"text" => "Peso igual. Formularios en dos columnas, comparativas.",
 				"variant" => "muted",
 			]);
 			echo "</div></div>";
@@ -919,26 +1021,27 @@ $ui->tab_panel([
 		echo "</div>";
 		pw_pg_section_end();
 
+		// ── 10. GRID MÉTRICAS 3-col ───────────────────────────────────────────
 		pw_pg_section(
-			"Grid 3 columnas — métricas (repeat(3, 1fr))",
-			"Indicador decorativo gris en esquina superior derecha.",
+			"Grid métricas — 3 columnas",
+			"Label " . pw_pg_arrow("down", 9) . " Número " . pw_pg_arrow("down", 9) . " Substats. Esquina decorativa: solo bordes, sin fondo.",
 		);
-		$metrics = [
-			["Neto", "$120.000", "12 facturas"],
-			["Activos", "47", "3 pendientes"],
-			["Cobertura", "94%", "Último mes"],
+		$metrics_data = [
+			["Neto", "$120.000", "Subtotal $100.000 · IVA $20.000"],
+			["Activos", "47",       "3 pendientes · 2 vencidos"],
+			["Cobertura", "94%",    "Último 30 días"],
 		];
 		echo '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:var(--pw-layout-gap);">';
-		foreach ($metrics as [$lbl, $val, $sub]) {
-			echo '<div style="position:relative;border:1px solid var(--pw-color-border-default);padding:var(--pw-card-padding);background:var(--pw-color-bg-subtle);overflow:hidden;">';
-			echo '<div style="position:absolute;top:0;right:0;width:20px;height:20px;background:var(--pw-color-bg-inset);"></div>';
-			echo '<div style="font-size:22px;font-weight:300;color:var(--pw-color-fg-muted);line-height:1;">' .
-				esc_html($val) .
-				"</div>";
-			echo '<div style="font-size:9px;text-transform:uppercase;letter-spacing:0.08em;color:var(--pw-color-fg-subtle);margin-top:4px;">' .
+		foreach ($metrics_data as [$lbl, $val, $sub]) {
+			echo '<div style="position:relative;border:1px solid var(--pw-color-border-default);background:var(--pw-color-bg-subtle);overflow:hidden;display:flex;flex-direction:column;">';
+			echo '<div style="position:absolute;top:0;right:0;width:18px;height:18px;border-left:1px solid var(--pw-color-border-emphasis);border-bottom:1px solid var(--pw-color-border-emphasis);"></div>';
+			echo '<div style="padding:8px 12px;font-size:9px;text-transform:uppercase;letter-spacing:0.06em;color:var(--pw-color-fg-subtle);border-bottom:1px solid var(--pw-color-border-muted);">' .
 				esc_html($lbl) .
 				"</div>";
-			echo '<div style="font-size:10px;color:var(--pw-color-fg-subtle);margin-top:6px;">' .
+			echo '<div style="flex:1;display:flex;align-items:center;padding:10px 12px;font-size:22px;font-weight:300;color:var(--pw-color-fg-muted);line-height:1;">' .
+				esc_html($val) .
+				"</div>";
+			echo '<div style="padding:8px 12px;font-size:10px;color:var(--pw-color-fg-subtle);border-top:1px solid var(--pw-color-border-muted);">' .
 				esc_html($sub) .
 				"</div>";
 			echo "</div>";
@@ -946,14 +1049,15 @@ $ui->tab_panel([
 		echo "</div>";
 		pw_pg_section_end();
 
+		// ── 11. GRID 4 COLUMNAS ───────────────────────────────────────────────
 		pw_pg_section(
 			"Grid 4 columnas (repeat(4, 1fr))",
-			"Gap uniforme: var(--pw-layout-gap) = 24px. Catálogos, iconografía, grids de opciones.",
+			"Gap uniforme var(--pw-layout-gap). Catálogos, opciones, iconografía.",
 		);
 		echo '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:var(--pw-layout-gap);">';
 		foreach (range(1, 8) as $n) {
 			echo '<div style="position:relative;border:1px solid var(--pw-color-border-default);padding:var(--pw-card-padding);background:var(--pw-color-bg-subtle);display:flex;align-items:center;justify-content:center;overflow:hidden;">';
-			echo '<div style="position:absolute;top:0;right:0;width:16px;height:16px;background:var(--pw-color-bg-inset);"></div>';
+			echo '<div style="position:absolute;top:0;right:0;width:14px;height:14px;border-left:1px solid var(--pw-color-border-emphasis);border-bottom:1px solid var(--pw-color-border-emphasis);"></div>';
 			echo '<span style="font-size:10px;color:var(--pw-color-fg-subtle);text-transform:uppercase;letter-spacing:0.06em;">Ítem ' .
 				(int) $n .
 				"</span>";
@@ -962,16 +1066,17 @@ $ui->tab_panel([
 		echo "</div>";
 		pw_pg_section_end();
 
+		// ── 12. GRID ASIMÉTRICO 2fr 1fr ───────────────────────────────────────
 		pw_pg_section(
 			"Grid asimétrico (2fr 1fr)",
-			"Contenido principal ancho " . pw_pg_arrow("right", 10) . " sidebar angosto. Gap uniforme: var(--pw-layout-gap).",
+			"Contenido principal " . pw_pg_arrow("right", 9) . " sidebar. Gap uniforme var(--pw-layout-gap).",
 		);
 		echo '<div style="display:grid;grid-template-columns:2fr 1fr;gap:var(--pw-layout-gap);">';
 		echo '<div style="border:1px solid var(--pw-color-border-default);padding:var(--pw-card-padding);background:var(--pw-color-bg-subtle);">';
 		$ui->heading(["text" => "Área principal (2fr)", "level" => 4]);
 		echo '<div style="margin-top:8px;">';
 		$ui->paragraph([
-			"text" => "Ocupa dos tercios. Contenido principal, formularios, tablas.",
+			"text" => "Dos tercios del ancho. Contenido principal, formularios, tablas.",
 			"variant" => "muted",
 		]);
 		echo "</div></div>";
@@ -979,13 +1084,13 @@ $ui->tab_panel([
 		$ui->heading(["text" => "Sidebar (1fr)", "level" => 4]);
 		echo '<div style="margin-top:8px;">';
 		$ui->paragraph(["text" => "Filtros, meta, acciones secundarias.", "variant" => "muted"]);
-		echo "</div></div>";
-		echo "</div>";
+		echo "</div></div></div>";
 		pw_pg_section_end();
 
+		// ── 13. GRID IRREGULAR 1fr 2fr 1fr ────────────────────────────────────
 		pw_pg_section(
 			"Grid irregular (1fr 2fr 1fr)",
-			"Columna central dominante — editorial, dashboards con foco en el centro.",
+			"Centro dominante — editorial, dashboards con foco central.",
 		);
 		echo '<div style="display:grid;grid-template-columns:1fr 2fr 1fr;gap:var(--pw-layout-gap);">';
 		foreach (["Nav / Meta (1fr)", "Contenido central (2fr)", "Acciones (1fr)"] as $col) {
@@ -999,9 +1104,10 @@ $ui->tab_panel([
 		echo "</div>";
 		pw_pg_section_end();
 
+		// ── 14. GEOMETRÍA A ────────────────────────────────────────────────────
 		pw_pg_section(
-			"Geometría irregular A — hero + side + meta/body",
-			"grid-template-areas. El hero span 2 cols; el side span 2 rows.",
+			"Geometría A — hero + side + meta/body",
+			"grid-template-areas. Hero span 2 cols; side span 2 rows. Gap var(--pw-layout-gap).",
 		);
 		echo '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:120px 80px;gap:var(--pw-layout-gap);grid-template-areas:\'hero hero side\' \'meta body side\';">';
 		foreach (
@@ -1010,55 +1116,7 @@ $ui->tab_panel([
 		) {
 			echo '<div style="grid-area:' .
 				esc_attr($area) .
-				';border:1px solid var(--pw-color-border-default);background:var(--pw-color-bg-inset);display:flex;align-items:center;justify-content:center;padding:var(--pw-space-3);">';
-			echo '<span style="font-size:10px;color:var(--pw-color-fg-subtle);text-transform:uppercase;letter-spacing:0.06em;">' .
-				esc_html($label) .
-				"</span>";
-			echo "</div>";
-		}
-		echo "</div>";
-		pw_pg_section_end();
-
-		pw_pg_section(
-			"Geometría irregular B — 5 celdas asimétricas",
-			"Banner full-width + 2 zonas de distinto peso + 2 módulos angostos.",
-		);
-		echo '<div style="display:grid;grid-template-columns:3fr 1fr;grid-template-rows:60px 100px 100px;gap:var(--pw-layout-gap);grid-template-areas:\'banner banner\' \'main aux1\' \'main aux2\';">';
-		foreach (
-			[
-				"banner" => "Banner (full width)",
-				"main" => "Main (span 2 rows)",
-				"aux1" => "Aux 1",
-				"aux2" => "Aux 2",
-			]
-			as $area => $label
-		) {
-			echo '<div style="grid-area:' .
-				esc_attr($area) .
-				';border:1px solid var(--pw-color-border-default);background:var(--pw-color-bg-inset);display:flex;align-items:center;justify-content:center;padding:var(--pw-space-3);">';
-			echo '<span style="font-size:10px;color:var(--pw-color-fg-subtle);text-transform:uppercase;letter-spacing:0.06em;">' .
-				esc_html($label) .
-				"</span>";
-			echo "</div>";
-		}
-		echo "</div>";
-		pw_pg_section_end();
-
-		pw_pg_section("Geometría irregular C — mosaico editorial 4 zonas");
-		echo '<div style="display:grid;grid-template-columns:1fr 1fr 2fr;grid-template-rows:80px 120px 80px;gap:var(--pw-layout-gap);grid-template-areas:\'a b feature\' \'c b feature\' \'d d feature\';">';
-		foreach (
-			[
-				"a" => "A",
-				"b" => "B (2 rows)",
-				"feature" => "Feature (3 rows)",
-				"c" => "C",
-				"d" => "D (ancho abajo)",
-			]
-			as $area => $label
-		) {
-			echo '<div style="grid-area:' .
-				esc_attr($area) .
-				';border:1px solid var(--pw-color-border-default);background:var(--pw-color-bg-inset);display:flex;align-items:center;justify-content:center;padding:var(--pw-space-3);">';
+				';border:1px solid var(--pw-color-border-default);background:var(--pw-color-bg-inset);display:flex;align-items:center;justify-content:center;">';
 			echo '<span style="font-size:9px;color:var(--pw-color-fg-subtle);text-transform:uppercase;letter-spacing:0.06em;">' .
 				esc_html($label) .
 				"</span>";
@@ -1067,50 +1125,165 @@ $ui->tab_panel([
 		echo "</div>";
 		pw_pg_section_end();
 
+		// ── 15. GEOMETRÍA B ────────────────────────────────────────────────────
+		pw_pg_section(
+			"Geometría B — banner full-width + main (span) + auxiliares",
+			"",
+		);
+		echo '<div style="display:grid;grid-template-columns:3fr 1fr;grid-template-rows:50px 90px 90px;gap:var(--pw-layout-gap);grid-template-areas:\'banner banner\' \'main aux1\' \'main aux2\';">';
+		foreach (
+			[
+				"banner" => "Banner (full width)",
+				"main"   => "Main (2 rows)",
+				"aux1"   => "Aux 1",
+				"aux2"   => "Aux 2",
+			]
+			as $area => $label
+		) {
+			echo '<div style="grid-area:' .
+				esc_attr($area) .
+				';border:1px solid var(--pw-color-border-default);background:var(--pw-color-bg-inset);display:flex;align-items:center;justify-content:center;">';
+			echo '<span style="font-size:9px;color:var(--pw-color-fg-subtle);text-transform:uppercase;letter-spacing:0.06em;">' .
+				esc_html($label) .
+				"</span>";
+			echo "</div>";
+		}
+		echo "</div>";
+		pw_pg_section_end();
+
+		// ── 16. GEOMETRÍA C ────────────────────────────────────────────────────
+		pw_pg_section("Geometría C — mosaico editorial 4 zonas", "");
+		echo '<div style="display:grid;grid-template-columns:1fr 1fr 2fr;grid-template-rows:80px 120px 80px;gap:var(--pw-layout-gap);grid-template-areas:\'a b feature\' \'c b feature\' \'d d feature\';">';
+		foreach (
+			[
+				"a"       => "A",
+				"b"       => "B (2 rows)",
+				"feature" => "Feature (3 rows)",
+				"c"       => "C",
+				"d"       => "D (ancho abajo)",
+			]
+			as $area => $label
+		) {
+			echo '<div style="grid-area:' .
+				esc_attr($area) .
+				';border:1px solid var(--pw-color-border-default);background:var(--pw-color-bg-inset);display:flex;align-items:center;justify-content:center;">';
+			echo '<span style="font-size:9px;color:var(--pw-color-fg-subtle);text-transform:uppercase;letter-spacing:0.06em;">' .
+				esc_html($label) .
+				"</span>";
+			echo "</div>";
+		}
+		echo "</div>";
+		pw_pg_section_end();
+
+		// ── 17. GEOMETRÍA D — DASHBOARD ─────────────────────────────────────────
+		pw_pg_section(
+			"Geometría D — dashboard de 5 zonas",
+			"Barra de estado + 2 métricas + tabla + panel lateral.",
+		);
+		echo '<div style="display:grid;grid-template-columns:1fr 1fr 280px;grid-template-rows:40px minmax(72px,auto) 1fr;gap:var(--pw-layout-gap);grid-template-areas:\'status status aside\' \'m1 m2 aside\' \'table table aside\';min-height:280px;">';
+		foreach (
+			[
+				"status" => "Status bar",
+				"m1"     => "Métrica 1",
+				"m2"     => "Métrica 2",
+				"table"  => "Tabla principal",
+				"aside"  => "Panel lateral (span 3 rows)",
+			]
+			as $area => $label
+		) {
+			$bg = in_array($area, ["m1", "m2"], true)
+				? "var(--pw-color-bg-emphasis)"
+				: "var(--pw-color-bg-inset)";
+			echo '<div style="grid-area:' .
+				esc_attr($area) .
+				';border:1px solid var(--pw-color-border-default);background:' .
+				esc_attr($bg) .
+				';display:flex;align-items:center;justify-content:center;padding:8px;">';
+			echo '<span style="font-size:9px;color:var(--pw-color-fg-subtle);text-transform:uppercase;letter-spacing:0.06em;">' .
+				esc_html($label) .
+				"</span>";
+			echo "</div>";
+		}
+		echo "</div>";
+		pw_pg_section_end();
+
+		// ── 18. GRID TABLA IRREGULAR ──────────────────────────────────────────
 		pw_pg_section(
 			"Grid irregular para tablas",
-			"Tabla de datos usando grid en vez de table. Las celdas pueden hacer span de columnas.",
+			"Data grid con CSS grid. Celdas con span. Gap 1px con fondo como separador.",
 		);
-		$cols = "2fr 1fr 1fr 80px";
-		echo '<div style="display:grid;grid-template-columns:' .
-			esc_attr($cols) .
-			';gap:1px;background:var(--pw-color-border-default);">';
+		$tcols = "2fr 1fr 1fr 80px";
+		echo '<div style="display:grid;grid-template-columns:' . esc_attr($tcols) . ';gap:1px;background:var(--pw-color-border-default);">';
 		foreach (["Nombre", "Estado", "Fecha", "Acción"] as $h) {
-			echo '<div style="background:var(--pw-color-bg-inset);padding:8px 12px;font-size:9px;text-transform:uppercase;letter-spacing:0.08em;color:var(--pw-color-fg-subtle);">' .
+			echo '<div style="background:var(--pw-color-bg-inset);padding:7px 12px;font-size:9px;text-transform:uppercase;letter-spacing:0.08em;color:var(--pw-color-fg-subtle);">' .
 				esc_html($h) .
 				"</div>";
 		}
-		$rows_data = [
-			["Entrada de ejemplo", "Publicado", "2026-04-01", "Ver"],
-			["Otro ítem más largo aquí", "Borrador", "2026-03-28", "Editar"],
-			["Tercera entrada", "Papelera", "—", "—"],
+		$trows = [
+			["Entrada de ejemplo", "Publicado",  "2026-04-01", "Ver"],
+			["Ítem con título largo aquí", "Borrador", "2026-03-28", "Editar"],
+			["Tercera entrada",   "Papelera",   "—",          "—"],
 		];
-		foreach ($rows_data as $row) {
+		foreach ($trows as $row) {
 			foreach ($row as $cell) {
-				echo '<div style="background:var(--pw-color-bg-subtle);padding:8px 12px;font-size:11px;color:var(--pw-color-fg-muted);">' .
+				echo '<div style="background:var(--pw-color-bg-subtle);padding:7px 12px;font-size:11px;color:var(--pw-color-fg-muted);">' .
 					esc_html($cell) .
 					"</div>";
 			}
 		}
-		echo '<div style="grid-column:span 3;background:var(--pw-color-bg-emphasis);padding:8px 12px;font-size:10px;color:var(--pw-color-fg-subtle);font-style:italic;">Celda span 3 columnas — notas o totales de sección</div>';
-		echo '<div style="background:var(--pw-color-bg-emphasis);padding:8px 12px;font-size:11px;color:var(--pw-color-fg-default);"></div>';
+		echo '<div style="grid-column:span 3;background:var(--pw-color-bg-emphasis);padding:7px 12px;font-size:10px;color:var(--pw-color-fg-subtle);font-style:italic;">Celda span 3 — nota, total o agrupación de sección</div>';
+		echo '<div style="background:var(--pw-color-bg-emphasis);padding:7px 12px;"></div>';
 		echo "</div>";
 		pw_pg_section_end();
 
+		// ── 19. MASONRY ───────────────────────────────────────────────────────
 		pw_pg_section(
 			"Masonry — CSS columns",
-			"column-count + column-gap. Los ítems fluyen verticalmente con alturas heterogéneas naturales.",
+			"column-count + column-gap. Alturas heterogéneas, flujo natural.",
 		);
 		echo '<div style="column-count:3;column-gap:var(--pw-layout-gap);">';
-		$items_h = [100, 60, 140, 80, 120, 50, 90, 110, 70];
-		foreach ($items_h as $h) {
+		foreach ([100, 60, 140, 80, 120, 50, 90, 110, 70] as $h) {
 			echo '<div style="break-inside:avoid;margin-bottom:var(--pw-layout-gap);border:1px solid var(--pw-color-border-default);padding:var(--pw-card-padding);background:var(--pw-color-bg-subtle);height:' .
 				(int) $h .
 				'px;display:flex;align-items:center;">';
-			echo '<span style="font-size:10px;color:var(--pw-color-fg-subtle);">h=' . (int) $h . "px</span>";
+			echo '<span style="font-size:9px;color:var(--pw-color-fg-subtle);">h=' . (int) $h . "px</span>";
 			echo "</div>";
 		}
 		echo "</div>";
+		pw_pg_section_end();
+
+		// ── 20. CONTENEDOR OVERFLOW / SCROLL ─────────────────────────────────
+		pw_pg_section(
+			"Contenedor con scroll interno",
+			"max-height fijo + overflow-y:scroll. Encabezado sticky dentro del contenedor.",
+		);
+		echo '<div style="border:1px solid var(--pw-color-border-default);">';
+		echo '<div style="position:sticky;top:0;padding:8px 16px;background:var(--pw-color-bg-emphasis);border-bottom:1px solid var(--pw-color-border-default);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--pw-color-fg-subtle);">Encabezado sticky</div>';
+		echo '<div style="max-height:160px;overflow-y:auto;">';
+		for ($i = 1; $i <= 10; $i++) {
+			$b = $i > 1 ? "border-top:1px solid var(--pw-color-border-muted);" : "";
+			echo '<div style="padding:8px 16px;font-size:11px;color:var(--pw-color-fg-muted);' .
+				$b .
+				'">Fila ' .
+				(int) $i .
+				" — contenido de fila con altura estándar</div>";
+		}
+		echo "</div></div>";
+		pw_pg_section_end();
+
+		// ── 21. FLOATING / LAYERED PANEL ─────────────────────────────────────
+		pw_pg_section(
+			"Panel flotante / layered",
+			"Posicionamiento absoluto. Base para dropdowns, menus, tooltips ricos y command palettes.",
+		);
+		echo '<div style="position:relative;border:1px solid var(--pw-color-border-default);padding:var(--pw-card-padding);background:var(--pw-color-bg-default);min-height:140px;">';
+		$ui->paragraph(["text" => "Contenido base. El panel flotante se posiciona sobre él."]);
+		echo '<div style="position:absolute;top:40px;left:32px;width:200px;border:1px solid var(--pw-color-border-emphasis);background:var(--pw-color-bg-subtle);box-shadow:0 4px 12px rgba(0,0,0,0.4);z-index:1;">';
+		echo '<div style="padding:6px 12px;border-bottom:1px solid var(--pw-color-border-muted);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--pw-color-fg-subtle);">Acciones</div>';
+		foreach (["Editar", "Duplicar", "Archivar"] as $action) {
+			echo '<div style="padding:6px 12px;font-size:11px;color:var(--pw-color-fg-muted);">' . esc_html($action) . "</div>";
+		}
+		echo "</div></div>";
 		pw_pg_section_end();
 	},
 ]);
