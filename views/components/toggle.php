@@ -11,6 +11,10 @@ defined("ABSPATH") || exit();
 
 $toggle_id = "pw-toggle-" . sanitize_title($atts["name"]);
 $checked = !empty($atts["checked"]);
+$data_attrs = "";
+foreach ((array) ($atts["data_attrs"] ?? []) as $key => $val) {
+	$data_attrs .= " data-" . esc_attr($key) . '="' . esc_attr($val) . '"';
+}
 ?>
 
 <div class="pw-bui-form-group <?php echo esc_attr($atts["wrapper_class"] ?? ""); ?>">
@@ -41,6 +45,7 @@ $checked = !empty($atts["checked"]);
             data-name="<?php echo esc_attr($atts["name"] ?? ""); ?>"
             data-value="<?php echo esc_attr($atts["value"] ?? "1"); ?>"
             <?php echo !empty($atts["disabled"]) ? "disabled" : ""; ?>
+            <?php echo $data_attrs; ?>
         >
             <span class="pw-bui-toggle__knob" aria-hidden="true"></span>
         </button>

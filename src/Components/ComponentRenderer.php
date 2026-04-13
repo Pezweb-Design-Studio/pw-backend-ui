@@ -201,6 +201,7 @@ class ComponentRenderer
 	 *     @type string $help     Help text.
 	 *     @type bool   $disabled Whether disabled.
 	 *     @type string $class    Additional CSS classes.
+	 *     @type array  $data_attrs Key→value pairs rendered as data-* on the button.
 	 * }
 	 */
 	public function toggle(array $atts = []): void
@@ -214,6 +215,7 @@ class ComponentRenderer
 			"disabled" => false,
 			"class" => "",
 			"wrapper_class" => "",
+			"data_attrs" => [],
 		]);
 		include __DIR__ . "/../../views/components/toggle.php";
 	}
