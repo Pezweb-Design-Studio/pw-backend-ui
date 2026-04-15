@@ -791,6 +791,47 @@ if (!function_exists("pw_pg_arrow")):
 	}
 endif;
 
+if (!function_exists("pw_pg_icon")):
+	/**
+	 * Render a UI icon SVG — same design language as pw_pg_arrow().
+	 * 1px stroke, square linecap, miter join, currentColor.
+	 */
+	function pw_pg_icon(string $name, int $size = 14): string
+	{
+		static $paths = [
+			"close"    => "M2 2L8 8 M8 2L2 8",
+			"check"    => "M1 5L3.5 7.5L9 2",
+			"plus"     => "M5 1V9 M1 5H9",
+			"minus"    => "M2 5H8",
+			"edit"     => "M1.5 8.5L6 4L8 2L9 3L7 5L2.5 9L1.5 8.5 M6 4L8 2",
+			"trash"    => "M2 3.5H8 M4 3.5V2H6V3.5 M3 3.5V9H7V3.5",
+			"eye"      => "M1 5C2.5 2.5 7.5 2.5 9 5C7.5 7.5 2.5 7.5 1 5",
+			"download" => "M5 1V7 M3 5L5 7L7 5 M2 9H8",
+			"upload"   => "M5 9V3 M3 5L5 3L7 5 M2 1H8",
+			"settings" => "M1 3H9 M1 7H9 M3 2V4 M7 6V8",
+			"lock"     => "M3 5H7V9H3Z M4 5V3H6V5",
+			"filter"   => "M1 2H9L6.5 5V9L3.5 8.5V5Z",
+			"sort"     => "M3 1V7 M1 5L3 7L5 5 M7 9V3 M5 5L7 3L9 5",
+			"trend-up" => "M1 8L3.5 5.5L6 7L9 2",
+			"trend-dn" => "M1 2L3.5 4.5L6 3L9 8",
+			"info"     => "M5 1A4 4 0 1 0 5 9A4 4 0 1 0 5 1Z M4.5 3.5H5.5 M5 5V8",
+			"copy"     => "M3.5 2H8V7H3.5Z M2 3.5V9H6.5V7",
+			"tag"      => "M2 2H5.5L9 5.5L5.5 9L2 5.5Z M3.5 3.5H4",
+			"external" => "M4 2H1V9H8V6 M5.5 1H9V4.5 M9 1L4 6",
+			"refresh"  => "M3 1L1 3H4 M7 9L9 7H6",
+		];
+		$d = $paths[$name] ?? "";
+		if (!$d) {
+			return "";
+		}
+		return sprintf(
+			'<svg xmlns="http://www.w3.org/2000/svg" width="%1$d" height="%1$d" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="square" stroke-linejoin="miter" style="display:inline-block;vertical-align:middle;" aria-hidden="true"><path d="%2$s"/></svg>',
+			$size,
+			esc_attr($d),
+		);
+	}
+endif;
+
 $ui->tab_panel([
 	"slug"    => "containers",
 	"content" => function () use ($ui) {
@@ -820,7 +861,40 @@ $ui->tab_panel([
 			echo "</span>";
 		}
 		pw_pg_row_end();
-		echo '<p style="font-size:11px;color:var(--pw-color-fg-subtle);margin-top:8px;">Uso: <code style="font-size:10px;color:var(--pw-color-fg-default);">pw_pg_arrow(\'right\', 12)</code></p>';
+		echo '<p style="font-size:11px;color:var(--pw-color-fg-subtle);margin-top:8px;">Uso: <code style="font-size:10px;color:var(--pw-color-fg-default);">pw_pg_arrow(\'right\', 12)</code> &nbsp;·&nbsp; <code style="font-size:10px;color:var(--pw-color-fg-default);">pw_pg_icon(\'check\', 14)</code></p>';
+
+		$ui_icon_names = [
+			"close",
+			"check",
+			"plus",
+			"minus",
+			"edit",
+			"trash",
+			"eye",
+			"download",
+			"upload",
+			"settings",
+			"lock",
+			"filter",
+			"sort",
+			"trend-up",
+			"trend-dn",
+			"info",
+			"copy",
+			"tag",
+			"external",
+			"refresh",
+		];
+		pw_pg_row("UI icons");
+		foreach ($ui_icon_names as $ic) {
+			echo '<span style="display:inline-flex;flex-direction:column;align-items:center;gap:4px;padding:8px;border:1px solid var(--pw-color-border-default);min-width:54px;">';
+			echo '<span style="color:var(--pw-color-fg-default);">' . pw_pg_icon($ic, 14) . "</span>";
+			echo '<span style="font-size:7px;color:var(--pw-color-fg-subtle);text-transform:uppercase;letter-spacing:0.06em;">' .
+				esc_html($ic) .
+				"</span>";
+			echo "</span>";
+		}
+		pw_pg_row_end();
 		pw_pg_section_end();
 
 		// ── 2. SPACING TOKENS ─────────────────────────────────────────────────
@@ -1037,7 +1111,7 @@ $ui->tab_panel([
 		echo '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:var(--pw-layout-gap);">';
 		foreach ($metrics_data as [$lbl, $val, $sub]) {
 			echo '<div style="position:relative;border:1px solid var(--pw-color-border-default);background:var(--pw-color-bg-subtle);overflow:hidden;display:flex;flex-direction:column;">';
-			echo '<div style="position:absolute;top:0;right:0;width:13px;height:13px;border-left:1px solid var(--pw-color-border-default);border-bottom:1px solid var(--pw-color-border-default);"></div>';
+			echo '<div style="position:absolute;top:0;right:0;width:7px;height:7px;border-left:1px solid var(--pw-color-border-default);border-bottom:1px solid var(--pw-color-border-default);"></div>';
 			echo '<div style="padding:8px 12px;font-size:9px;text-transform:uppercase;letter-spacing:0.06em;color:var(--pw-color-fg-subtle);border-bottom:1px solid var(--pw-color-border-muted);">' .
 				esc_html($lbl) .
 				"</div>";
@@ -1060,7 +1134,7 @@ $ui->tab_panel([
 		echo '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:var(--pw-layout-gap);">';
 		foreach (range(1, 8) as $n) {
 			echo '<div style="position:relative;border:1px solid var(--pw-color-border-default);padding:var(--pw-card-padding);background:var(--pw-color-bg-subtle);display:flex;align-items:center;justify-content:center;overflow:hidden;">';
-			echo '<div style="position:absolute;top:0;right:0;width:13px;height:13px;border-left:1px solid var(--pw-color-border-default);border-bottom:1px solid var(--pw-color-border-default);"></div>';
+			echo '<div style="position:absolute;top:0;right:0;width:7px;height:7px;border-left:1px solid var(--pw-color-border-default);border-bottom:1px solid var(--pw-color-border-default);"></div>';
 			echo '<span style="font-size:10px;color:var(--pw-color-fg-subtle);text-transform:uppercase;letter-spacing:0.06em;">Ítem ' .
 				(int) $n .
 				"</span>";
@@ -1307,7 +1381,7 @@ $ui->tab_panel([
 					? "pw-bui-action-grid pw-bui-action-grid--orange"
 					: "pw-bui-action-grid";
 			echo '<div style="position:relative;border:1px solid var(--pw-color-border-default);background:var(--pw-color-bg-subtle);overflow:hidden;display:flex;flex-direction:column;">';
-			echo '<div style="position:absolute;top:0;right:0;width:13px;height:13px;border-left:1px solid var(--pw-color-border-default);border-bottom:1px solid var(--pw-color-border-default);"></div>';
+			echo '<div style="position:absolute;top:0;right:0;width:7px;height:7px;border-left:1px solid var(--pw-color-border-default);border-bottom:1px solid var(--pw-color-border-default);"></div>';
 			echo '<div style="padding:8px 12px;font-size:9px;text-transform:uppercase;letter-spacing:0.06em;color:var(--pw-color-fg-subtle);border-bottom:1px solid var(--pw-color-border-muted);">' .
 				esc_html($label) .
 				"</div>";
@@ -1418,6 +1492,262 @@ $ui->tab_panel([
 		echo '<button type="button" class="pw-bui-action">' . pw_pg_arrow("right", 8) . "&nbsp;Siguiente</button>";
 		echo "</div>";
 		echo "</div>";
+		pw_pg_section_end();
+
+		// ── 25. MEDIA PLACEHOLDERS ────────────────────────────────────────────
+		pw_pg_section(
+			"Media Placeholders",
+			"Contenedores para imágenes, video, sliders y avatares: rayado diagonal + variantes de ratio.",
+		);
+		pw_pg_row("Imagen — ratios");
+		echo '<div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:var(--pw-layout-gap);width:100%;">';
+		foreach (
+			[
+				["pw-bui-placeholder--16-9", "16:9"],
+				["pw-bui-placeholder--square", "1:1"],
+				["pw-bui-placeholder--4-3", "4:3"],
+			] as [$cls, $lbl]
+		) {
+			echo '<div class="pw-bui-placeholder ' . esc_attr($cls) . '">';
+			echo '<div class="pw-bui-placeholder__icon">' .
+				pw_pg_icon("external", 14) .
+				'<span class="pw-bui-placeholder__label">' .
+				esc_html($lbl) .
+				"</span></div>";
+			echo "</div>";
+		}
+		echo "</div>";
+		pw_pg_row_end();
+		pw_pg_row("Video + thumb + avatar + slider");
+		echo '<div style="display:grid;grid-template-columns:2fr 1fr;gap:var(--pw-layout-gap);width:100%;">';
+		echo '<div class="pw-bui-placeholder pw-bui-placeholder--16-9 pw-bui-placeholder--video">';
+		echo '<div class="pw-bui-placeholder__icon"><span class="pw-bui-placeholder__label">Video</span></div>';
+		echo "</div>";
+		echo '<div style="display:flex;flex-direction:column;gap:10px;">';
+		echo '<div style="display:flex;gap:8px;align-items:center;">';
+		echo '<div class="pw-bui-placeholder pw-bui-placeholder--thumb"></div>';
+		echo '<div class="pw-bui-placeholder pw-bui-placeholder--thumb"></div>';
+		echo '<div class="pw-bui-placeholder pw-bui-placeholder--avatar"></div>';
+		echo "</div>";
+		echo '<div class="pw-bui-slider-placeholder">';
+		echo '<div class="pw-bui-slider-placeholder__nav pw-bui-slider-placeholder__nav--prev">' .
+			pw_pg_arrow("left", 8) .
+			"</div>";
+		echo '<div class="pw-bui-slider-placeholder__nav pw-bui-slider-placeholder__nav--next">' .
+			pw_pg_arrow("right", 8) .
+			"</div>";
+		echo '<div class="pw-bui-slider-placeholder__dots">';
+		echo '<div class="pw-bui-slider-placeholder__dot pw-bui-slider-placeholder__dot--active"></div>';
+		echo '<div class="pw-bui-slider-placeholder__dot"></div>';
+		echo '<div class="pw-bui-slider-placeholder__dot"></div>';
+		echo "</div></div></div></div>";
+		pw_pg_row_end();
+		pw_pg_section_end();
+
+		// ── 26. TERMINAL CONTAINER ────────────────────────────────────────────
+		pw_pg_section(
+			"Terminal / Console",
+			"Contenedor de consola — logs, resultados de proceso, datos estructurados en monospace.",
+		);
+		pw_pg_row();
+		echo '<div class="pw-bui-terminal" style="width:100%;max-width:520px;">';
+		echo '<div class="pw-bui-terminal__bar"><span class="pw-bui-terminal__dot"></span><span class="pw-bui-terminal__dot"></span><span class="pw-bui-terminal__dot"></span><span class="pw-bui-terminal__title">pw-ofertas — sync</span></div>';
+		echo '<div class="pw-bui-terminal__body">';
+		echo '<span class="pw-bui-terminal__line"><span class="pw-bui-terminal__prompt">&gt;</span><span class="pw-bui-terminal__cmd">sync:campaigns --env=prod</span></span>';
+		echo '<span class="pw-bui-terminal__line"><span class="pw-bui-terminal__out">Iniciando sincronización...</span></span>';
+		echo '<span class="pw-bui-terminal__line"><span class="pw-bui-terminal__key">campaigns  </span><span class="pw-bui-terminal__ok">✓ 12 activas</span></span>';
+		echo '<span class="pw-bui-terminal__line"><span class="pw-bui-terminal__key">cache      </span><span class="pw-bui-terminal__warn">⚠ expirado — reconstruyendo</span></span>';
+		echo '<span class="pw-bui-terminal__line"><span class="pw-bui-terminal__key">index      </span><span class="pw-bui-terminal__ok">✓ reconstruido en 84ms</span></span>';
+		echo '<span class="pw-bui-terminal__line"><span class="pw-bui-terminal__dim">——————————————————————————————</span></span>';
+		echo '<span class="pw-bui-terminal__line"><span class="pw-bui-terminal__out">Completado en 1.2s</span><span class="pw-bui-terminal__cursor"></span></span>';
+		echo "</div></div>";
+		pw_pg_row_end();
+		pw_pg_section_end();
+
+		// ── 27. REPEATER TABLE ────────────────────────────────────────────────
+		pw_pg_section(
+			"Repeater — tabla de entrada de datos",
+			"Para listas editables: condiciones, metadatos, campos clave-valor.",
+		);
+		pw_pg_row("key → value + acción");
+		echo '<div class="pw-bui-repeater pw-bui-repeater--kv-act" style="width:100%;">';
+		echo '<div class="pw-bui-repeater__head"><div class="pw-bui-repeater__head-cell">Clave</div><div class="pw-bui-repeater__head-cell">Valor</div><div class="pw-bui-repeater__head-cell"></div></div>';
+		foreach ([["min_qty", "3"], ["category_id", "ropa"], ["user_role", "subscriber"]] as [$k, $v]) {
+			echo '<div class="pw-bui-repeater__row">';
+			echo '<div class="pw-bui-repeater__cell" style="color:var(--pw-color-fg-muted);">' . esc_html($k) . "</div>";
+			echo '<div class="pw-bui-repeater__cell">' . esc_html($v) . "</div>";
+			echo '<div class="pw-bui-repeater__cell pw-bui-repeater__cell--actions"><button type="button" class="pw-bui-action pw-bui-action--muted" style="padding:0 5px;height:18px;">' .
+				pw_pg_icon("trash", 8) .
+				"</button></div>";
+			echo "</div>";
+		}
+		echo '<div class="pw-bui-repeater__footer"><button type="button" class="pw-bui-repeater__add">' .
+			pw_pg_icon("plus", 8) .
+			" Añadir fila</button></div>";
+		echo "</div>";
+		pw_pg_row_end();
+		pw_pg_section_end();
+
+		// ── 28. PANEL GRID ────────────────────────────────────────────────────
+		pw_pg_section(
+			"Panel Grid",
+			"Contenedor CSS Grid irregular con presets de layout. Ideal para dashboards y vistas de detalle.",
+		);
+
+		echo '<div style="display:flex;flex-direction:column;gap:20px;">';
+
+		echo "<div>";
+		echo '<p style="font-size:11px;color:var(--pw-color-fg-muted);margin-bottom:8px;">Layout 2-1-1 (detail + two side cells)</p>';
+		echo '<div class="pw-bui-panel-grid pw-bui-panel-grid--2-1-1">';
+		echo '<div class="pw-bui-panel-grid__cell">';
+		echo '<p class="pw-bui-section-label">Main Info</p>';
+		echo '<p class="pw-bui-paragraph">Celda principal con más espacio para contenido de detalle. Puede contener formularios, listas o texto largo.</p>';
+		echo "</div>";
+		echo '<div class="pw-bui-panel-grid__cell">';
+		echo '<p class="pw-bui-section-label">Metric A</p>';
+		echo '<p style="font-size:24px;font-weight:700;color:var(--pw-color-fg-default);">1,284</p>';
+		echo '<p style="font-size:11px;color:var(--pw-color-fg-muted);">últimas 24h</p>';
+		echo "</div>";
+		echo '<div class="pw-bui-panel-grid__cell">';
+		echo '<p class="pw-bui-section-label">Metric B</p>';
+		echo '<p style="font-size:24px;font-weight:700;color:var(--pw-color-fg-default);">94.3%</p>';
+		echo '<p style="font-size:11px;color:var(--pw-color-fg-muted);">eficiencia</p>';
+		echo "</div>";
+		echo "</div>";
+		echo "</div>";
+
+		echo "<div>";
+		echo '<p style="font-size:11px;color:var(--pw-color-fg-muted);margin-bottom:8px;">Layout 1-1-1 (three equal columns)</p>';
+		echo '<div class="pw-bui-panel-grid pw-bui-panel-grid--3">';
+		foreach (["Alpha", "Beta", "Gamma"] as $label) {
+			echo '<div class="pw-bui-panel-grid__cell">';
+			echo '<p class="pw-bui-section-label">' . esc_html($label) . "</p>";
+			echo '<p class="pw-bui-paragraph" style="margin:0;">Contenido de celda uniforme. Los tres paneles comparten el mismo ancho y padding.</p>';
+			echo "</div>";
+		}
+		echo "</div>";
+		echo "</div>";
+
+		echo "<div>";
+		echo '<p style="font-size:11px;color:var(--pw-color-fg-muted);margin-bottom:8px;">Layout 1-2-1 (narrow — wide — narrow)</p>';
+		echo '<div class="pw-bui-panel-grid pw-bui-panel-grid--1-2-1">';
+		echo '<div class="pw-bui-panel-grid__cell">';
+		echo '<p class="pw-bui-section-label">Filtros</p>';
+		echo '<p class="pw-bui-paragraph" style="margin:0;">Panel estrecho lateral izquierdo.</p>';
+		echo "</div>";
+		echo '<div class="pw-bui-panel-grid__cell">';
+		echo '<p class="pw-bui-section-label">Contenido principal</p>';
+		echo '<p class="pw-bui-paragraph" style="margin:0;">Celda central ampliada. Recibe el doble de espacio que las columnas laterales. Ideal para tablas o editores.</p>';
+		echo "</div>";
+		echo '<div class="pw-bui-panel-grid__cell">';
+		echo '<p class="pw-bui-section-label">Acciones</p>';
+		echo '<p class="pw-bui-paragraph" style="margin:0;">Panel estrecho lateral derecho.</p>';
+		echo "</div>";
+		echo "</div>";
+		echo "</div>";
+
+		echo "<div>";
+		echo '<p style="font-size:11px;color:var(--pw-color-fg-muted);margin-bottom:8px;">Layout 2-1 (two columns)</p>';
+		echo '<div class="pw-bui-panel-grid pw-bui-panel-grid--2-1">';
+		echo '<div class="pw-bui-panel-grid__cell">';
+		echo '<p class="pw-bui-section-label">Columna principal</p>';
+		echo '<p class="pw-bui-paragraph" style="margin:0;">Ocupa dos tercios del ancho disponible.</p>';
+		echo "</div>";
+		echo '<div class="pw-bui-panel-grid__cell">';
+		echo '<p class="pw-bui-section-label">Columna lateral</p>';
+		echo '<p class="pw-bui-paragraph" style="margin:0;">Un tercio del ancho.</p>';
+		echo "</div>";
+		echo "</div>";
+		echo "</div>";
+
+		echo "</div>";
+
+		pw_pg_section_end();
+
+		// ── 29. ACTION PANEL + BADGE VARIANTS ─────────────────────────────────
+		pw_pg_section(
+			"Action Panel & Badge Variants",
+			"Panel estructurado para grupos de acciones con header, body y footer opcionales. Incluye los nuevos tintes de badge.",
+		);
+
+		echo '<div style="display:flex;flex-direction:column;gap:24px;">';
+
+		echo "<div>";
+		echo '<p class="pw-bui-section-label" style="margin-bottom:10px;">Badge variants</p>';
+		echo '<div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;">';
+		$badges = [
+			["label" => "default",  "class" => ""],
+			["label" => "orange",   "class" => " pw-bui-badge--orange"],
+			["label" => "warning",  "class" => " pw-bui-badge--warning"],
+			["label" => "success",  "class" => " pw-bui-badge--success"],
+			["label" => "info",     "class" => " pw-bui-badge--info"],
+			["label" => "danger",   "class" => " pw-bui-badge--danger"],
+			["label" => "muted",    "class" => " pw-bui-badge--muted"],
+		];
+		foreach ($badges as $b) {
+			echo '<span class="pw-bui-badge' . esc_attr($b["class"]) . '">' . esc_html($b["label"]) . "</span>";
+		}
+		echo "</div>";
+		echo "</div>";
+
+		echo "<div>";
+		echo '<p style="font-size:11px;color:var(--pw-color-fg-muted);margin-bottom:8px;">Default action panel</p>';
+		echo '<div class="pw-bui-action-panel">';
+		echo '<div class="pw-bui-action-panel__header">';
+		echo '<span class="pw-bui-badge pw-bui-badge--info">Info</span>';
+		echo '<p style="margin:0;font-size:13px;font-weight:600;color:var(--pw-color-fg-default);">Título del panel</p>';
+		echo "</div>";
+		echo '<div class="pw-bui-action-panel__body">';
+		echo '<p class="pw-bui-paragraph" style="margin:0;">Contenido principal del action panel. Puede incluir texto descriptivo, formularios inline o cualquier componente del sistema.</p>';
+		echo "</div>";
+		echo '<div class="pw-bui-action-panel__footer">';
+		echo '<button type="button" class="pw-bui-btn pw-bui-btn--primary">Confirmar</button>';
+		echo '<button type="button" class="pw-bui-btn pw-bui-btn--ghost">Cancelar</button>';
+		echo "</div>";
+		echo "</div>";
+		echo "</div>";
+
+		echo "<div>";
+		echo '<p style="font-size:11px;color:var(--pw-color-fg-muted);margin-bottom:8px;">Variant --success</p>';
+		echo '<div class="pw-bui-action-panel pw-bui-action-panel--success">';
+		echo '<div class="pw-bui-action-panel__header">';
+		echo '<span class="pw-bui-badge pw-bui-badge--success">Activo</span>';
+		echo '<p style="margin:0;font-size:13px;font-weight:600;color:var(--pw-color-fg-default);">Campaña publicada</p>';
+		echo "</div>";
+		echo '<div class="pw-bui-action-panel__body">';
+		echo '<p class="pw-bui-paragraph" style="margin:0;">La campaña está activa y procesando pedidos. Puedes pausarla en cualquier momento sin perder la configuración.</p>';
+		echo "</div>";
+		echo "</div>";
+		echo "</div>";
+
+		echo "<div>";
+		echo '<p style="font-size:11px;color:var(--pw-color-fg-muted);margin-bottom:8px;">Variant --warning</p>';
+		echo '<div class="pw-bui-action-panel pw-bui-action-panel--warning">';
+		echo '<div class="pw-bui-action-panel__header">';
+		echo '<span class="pw-bui-badge pw-bui-badge--warning">Atención</span>';
+		echo '<p style="margin:0;font-size:13px;font-weight:600;color:var(--pw-color-fg-default);">Stock bajo</p>';
+		echo "</div>";
+		echo '<div class="pw-bui-action-panel__body">';
+		echo '<p class="pw-bui-paragraph" style="margin:0;">Quedan menos de 10 unidades en inventario. Considera aumentar el stock o ajustar la condición de liquidación.</p>';
+		echo "</div>";
+		echo '<div class="pw-bui-action-panel__footer">';
+		echo '<button type="button" class="pw-bui-btn pw-bui-btn--secondary">Ver inventario</button>';
+		echo "</div>";
+		echo "</div>";
+		echo "</div>";
+
+		echo "<div>";
+		echo '<p style="font-size:11px;color:var(--pw-color-fg-muted);margin-bottom:8px;">Variant --muted (compact, no body)</p>';
+		echo '<div class="pw-bui-action-panel pw-bui-action-panel--muted">';
+		echo '<div class="pw-bui-action-panel__header">';
+		echo '<span class="pw-bui-badge pw-bui-badge--muted">Inactivo</span>';
+		echo '<p style="margin:0;font-size:13px;color:var(--pw-color-fg-muted);">Sin actividad reciente en este bloque.</p>';
+		echo "</div>";
+		echo "</div>";
+		echo "</div>";
+
+		echo "</div>";
+
 		pw_pg_section_end();
 	},
 ]);

@@ -40,6 +40,7 @@ $has_sidenav = !empty($page["sidenav"]);
                         <?php if (!empty($display_version)): ?>
                             <span class="pw-bui-logo__version">v.<?php echo esc_html($display_version); ?></span>
                         <?php endif; ?>
+                        <a href="https://pezweb.com" class="pw-bui-logo__site" target="_blank" rel="noopener">pezweb.com</a>
                     </div>
                 </div>
             </div>
