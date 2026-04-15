@@ -803,9 +803,7 @@ if (!function_exists("pw_pg_icon")):
 			"check"    => "M1 5L3.5 7.5L9 2",
 			"plus"     => "M5 1V9 M1 5H9",
 			"minus"    => "M2 5H8",
-			"edit"     => "M1.5 8.5L6 4L8 2L9 3L7 5L2.5 9L1.5 8.5 M6 4L8 2",
 			"trash"    => "M2 3.5H8 M4 3.5V2H6V3.5 M3 3.5V9H7V3.5",
-			"eye"      => "M1 5C2.5 2.5 7.5 2.5 9 5C7.5 7.5 2.5 7.5 1 5",
 			"download" => "M5 1V7 M3 5L5 7L7 5 M2 9H8",
 			"upload"   => "M5 9V3 M3 5L5 3L7 5 M2 1H8",
 			"settings" => "M1 3H9 M1 7H9 M3 2V4 M7 6V8",
@@ -818,7 +816,6 @@ if (!function_exists("pw_pg_icon")):
 			"copy"     => "M3.5 2H8V7H3.5Z M2 3.5V9H6.5V7",
 			"tag"      => "M2 2H5.5L9 5.5L5.5 9L2 5.5Z M3.5 3.5H4",
 			"external" => "M4 2H1V9H8V6 M5.5 1H9V4.5 M9 1L4 6",
-			"refresh"  => "M3 1L1 3H4 M7 9L9 7H6",
 		];
 		$d = $paths[$name] ?? "";
 		if (!$d) {
@@ -868,9 +865,7 @@ $ui->tab_panel([
 			"check",
 			"plus",
 			"minus",
-			"edit",
 			"trash",
-			"eye",
 			"download",
 			"upload",
 			"settings",
@@ -883,7 +878,6 @@ $ui->tab_panel([
 			"copy",
 			"tag",
 			"external",
-			"refresh",
 		];
 		pw_pg_row("UI icons");
 		foreach ($ui_icon_names as $ic) {
@@ -1695,7 +1689,7 @@ $ui->tab_panel([
 		echo '<div class="pw-bui-action-panel">';
 		echo '<div class="pw-bui-action-panel__header">';
 		echo '<span class="pw-bui-badge pw-bui-badge--info">Info</span>';
-		echo '<p style="margin:0;font-size:13px;font-weight:600;color:var(--pw-color-fg-default);">Título del panel</p>';
+		echo '<p style="margin:0;font-size:10px;font-weight:500;color:var(--pw-color-fg);">Título del panel</p>';
 		echo "</div>";
 		echo '<div class="pw-bui-action-panel__body">';
 		echo '<p class="pw-bui-paragraph" style="margin:0;">Contenido principal del action panel. Puede incluir texto descriptivo, formularios inline o cualquier componente del sistema.</p>';
@@ -1712,7 +1706,7 @@ $ui->tab_panel([
 		echo '<div class="pw-bui-action-panel pw-bui-action-panel--success">';
 		echo '<div class="pw-bui-action-panel__header">';
 		echo '<span class="pw-bui-badge pw-bui-badge--success">Activo</span>';
-		echo '<p style="margin:0;font-size:13px;font-weight:600;color:var(--pw-color-fg-default);">Campaña publicada</p>';
+		echo '<p style="margin:0;font-size:10px;font-weight:500;color:var(--pw-color-fg);">Campaña publicada</p>';
 		echo "</div>";
 		echo '<div class="pw-bui-action-panel__body">';
 		echo '<p class="pw-bui-paragraph" style="margin:0;">La campaña está activa y procesando pedidos. Puedes pausarla en cualquier momento sin perder la configuración.</p>';
@@ -1725,7 +1719,7 @@ $ui->tab_panel([
 		echo '<div class="pw-bui-action-panel pw-bui-action-panel--warning">';
 		echo '<div class="pw-bui-action-panel__header">';
 		echo '<span class="pw-bui-badge pw-bui-badge--warning">Atención</span>';
-		echo '<p style="margin:0;font-size:13px;font-weight:600;color:var(--pw-color-fg-default);">Stock bajo</p>';
+		echo '<p style="margin:0;font-size:10px;font-weight:500;color:var(--pw-color-fg);">Stock bajo</p>';
 		echo "</div>";
 		echo '<div class="pw-bui-action-panel__body">';
 		echo '<p class="pw-bui-paragraph" style="margin:0;">Quedan menos de 10 unidades en inventario. Considera aumentar el stock o ajustar la condición de liquidación.</p>';
@@ -1741,7 +1735,204 @@ $ui->tab_panel([
 		echo '<div class="pw-bui-action-panel pw-bui-action-panel--muted">';
 		echo '<div class="pw-bui-action-panel__header">';
 		echo '<span class="pw-bui-badge pw-bui-badge--muted">Inactivo</span>';
-		echo '<p style="margin:0;font-size:13px;color:var(--pw-color-fg-muted);">Sin actividad reciente en este bloque.</p>';
+		echo '<p style="margin:0;font-size:10px;font-weight:500;color:var(--pw-color-fg-muted);">Sin actividad reciente en este bloque.</p>';
+		echo "</div>";
+		echo "</div>";
+		echo "</div>";
+
+		echo "</div>";
+
+		pw_pg_section_end();
+
+		// ── 30. SMART SLIDERS ───────────────────────────────────────────────────
+		pw_pg_section(
+			"Smart Sliders",
+			"Control de rango con track, fill, thumb y etiquetas de valor. Variantes de color según contexto semántico.",
+		);
+
+		echo '<div style="display:flex;flex-direction:column;gap:20px;max-width:480px;">';
+
+		echo '<div class="pw-bui-smart-slider">';
+		echo '<div class="pw-bui-smart-slider__header">';
+		echo '<span class="pw-bui-smart-slider__label">Descuento máximo</span>';
+		echo '<span class="pw-bui-smart-slider__value">60%</span>';
+		echo "</div>";
+		echo '<div class="pw-bui-smart-slider__track" style="--slider-fill:60%;">';
+		echo '<div class="pw-bui-smart-slider__fill"></div>';
+		echo '<div class="pw-bui-smart-slider__thumb"></div>';
+		echo '<div class="pw-bui-smart-slider__steps">';
+		for ($i = 0; $i <= 10; $i++) {
+			echo '<span class="pw-bui-smart-slider__step"></span>';
+		}
+		echo "</div>";
+		echo "</div>";
+		echo '<div class="pw-bui-smart-slider__footer">';
+		echo '<span class="pw-bui-smart-slider__min">0%</span>';
+		echo '<span class="pw-bui-smart-slider__max">100%</span>';
+		echo "</div>";
+		echo "</div>";
+
+		echo '<div class="pw-bui-smart-slider pw-bui-smart-slider--success">';
+		echo '<div class="pw-bui-smart-slider__header">';
+		echo '<span class="pw-bui-smart-slider__label">Umbral de conversión</span>';
+		echo '<span class="pw-bui-smart-slider__value">82%</span>';
+		echo "</div>";
+		echo '<div class="pw-bui-smart-slider__track" style="--slider-fill:82%;">';
+		echo '<div class="pw-bui-smart-slider__fill"></div>';
+		echo '<div class="pw-bui-smart-slider__thumb"></div>';
+		echo "</div>";
+		echo '<div class="pw-bui-smart-slider__footer">';
+		echo '<span class="pw-bui-smart-slider__min">0</span>';
+		echo '<span class="pw-bui-smart-slider__max">100</span>';
+		echo "</div>";
+		echo "</div>";
+
+		echo '<div class="pw-bui-smart-slider pw-bui-smart-slider--warning">';
+		echo '<div class="pw-bui-smart-slider__header">';
+		echo '<span class="pw-bui-smart-slider__label">Prioridad de campaña</span>';
+		echo '<span class="pw-bui-smart-slider__value">35 / 100</span>';
+		echo "</div>";
+		echo '<div class="pw-bui-smart-slider__track" style="--slider-fill:35%;">';
+		echo '<div class="pw-bui-smart-slider__fill"></div>';
+		echo '<div class="pw-bui-smart-slider__thumb"></div>';
+		echo '<div class="pw-bui-smart-slider__steps">';
+		for ($i = 0; $i <= 4; $i++) {
+			echo '<span class="pw-bui-smart-slider__step"></span>';
+		}
+		echo "</div>";
+		echo "</div>";
+		echo '<div class="pw-bui-smart-slider__footer">';
+		echo '<span class="pw-bui-smart-slider__min">0</span>';
+		echo '<span class="pw-bui-smart-slider__max">100</span>';
+		echo "</div>";
+		echo "</div>";
+
+		echo '<div class="pw-bui-smart-slider pw-bui-smart-slider--danger">';
+		echo '<div class="pw-bui-smart-slider__header">';
+		echo '<span class="pw-bui-smart-slider__label">Stock mínimo (alerta)</span>';
+		echo '<span class="pw-bui-smart-slider__value">18 uds.</span>';
+		echo "</div>";
+		echo '<div class="pw-bui-smart-slider__track" style="--slider-fill:18%;">';
+		echo '<div class="pw-bui-smart-slider__fill"></div>';
+		echo '<div class="pw-bui-smart-slider__thumb"></div>';
+		echo "</div>";
+		echo '<div class="pw-bui-smart-slider__footer">';
+		echo '<span class="pw-bui-smart-slider__min">0</span>';
+		echo '<span class="pw-bui-smart-slider__max">100</span>';
+		echo "</div>";
+		echo "</div>";
+
+		echo "</div>";
+
+		pw_pg_section_end();
+
+		// ── 31. MODAL ───────────────────────────────────────────────────────────
+		pw_pg_section(
+			"Modal",
+			"Diálogo superpuesto con variantes de posición: centrado, fullscreen, drawers top/bottom/left/right, y contained dentro de un contenedor posicionado.",
+		);
+
+		echo '<div style="display:flex;flex-direction:column;gap:24px;">';
+
+		$render_modal = function (string $title, string $body_text, string $extra_class = "", string $extra_style = "") {
+			$classes = "pw-bui-modal" . ($extra_class !== "" ? " " . $extra_class : "");
+			echo '<div class="' . esc_attr($classes) . '"' . ($extra_style !== "" ? ' style="' . esc_attr($extra_style) . '"' : "") . ">";
+			echo '<div class="pw-bui-modal__header">';
+			echo '<p class="pw-bui-modal__title">' . esc_html($title) . "</p>";
+			echo '<button type="button" class="pw-bui-modal__close" aria-label="Cerrar">✕</button>';
+			echo "</div>";
+			echo '<div class="pw-bui-modal__body">';
+			echo '<p class="pw-bui-paragraph" style="margin:0;">' . esc_html($body_text) . "</p>";
+			echo "</div>";
+			echo '<div class="pw-bui-modal__footer">';
+			echo '<button type="button" class="pw-bui-btn pw-bui-btn--ghost">Cancelar</button>';
+			echo '<button type="button" class="pw-bui-btn pw-bui-btn--primary">Confirmar</button>';
+			echo "</div>";
+			echo "</div>";
+		};
+
+		echo "<div>";
+		echo '<p style="font-size:11px;color:var(--pw-color-fg-muted);margin-bottom:8px;">Centered (default)</p>';
+		$render_modal(
+			"Confirmar acción",
+			"Esta acción no se puede deshacer. ¿Deseas continuar con el proceso de eliminación del recurso seleccionado?",
+		);
+		echo "</div>";
+
+		echo "<div>";
+		echo '<p style="font-size:11px;color:var(--pw-color-fg-muted);margin-bottom:8px;">Contained — vive dentro de un contenedor relativo</p>';
+		echo '<div class="pw-bui-modal--contained-wrap" style="height:200px;border:1px solid var(--pw-color-border-default);">';
+		$render_modal(
+			"Modal contenido",
+			"Aparece centrado dentro del contenedor padre, no en el viewport.",
+			"pw-bui-modal--contained",
+		);
+		echo "</div>";
+		echo "</div>";
+
+		echo "<div>";
+		echo '<p style="font-size:11px;color:var(--pw-color-fg-muted);margin-bottom:8px;">Top drawer (preview in-flow)</p>';
+		$render_modal(
+			"Notificación global",
+			"Aparece en el borde superior. Útil para alertas o confirmaciones de acción rápida.",
+			"",
+			"position:relative;width:100%;max-width:100%;max-height:none;border-left:none;border-right:none;border-top:none;",
+		);
+		echo "</div>";
+
+		echo "<div>";
+		echo '<p style="font-size:11px;color:var(--pw-color-fg-muted);margin-bottom:8px;">Bottom drawer (preview in-flow)</p>';
+		$render_modal(
+			"Acciones de selección",
+			"Muestra opciones contextuales ancladas al borde inferior de la pantalla.",
+			"",
+			"position:relative;width:100%;max-width:100%;max-height:none;border-left:none;border-right:none;border-bottom:none;",
+		);
+		echo "</div>";
+
+		echo "<div>";
+		echo '<p style="font-size:11px;color:var(--pw-color-fg-muted);margin-bottom:8px;">Right panel</p>';
+		echo '<div style="display:flex;gap:0;border:1px solid var(--pw-color-border-default);height:180px;">';
+		echo '<div style="flex:1;padding:16px;background:var(--pw-color-bg-default);display:flex;align-items:center;justify-content:center;">';
+		echo '<p class="pw-bui-paragraph" style="margin:0;color:var(--pw-color-fg-subtle);font-size:11px;">Contenido principal</p>';
+		echo "</div>";
+		$render_modal(
+			"Panel derecho",
+			"Sidebar deslizable desde la derecha. Útil para configuración detallada o vista de detalle.",
+			"",
+			"position:relative;width:280px;max-width:280px;height:100%;max-height:100%;border-top:none;border-right:none;border-bottom:none;",
+		);
+		echo "</div>";
+		echo "</div>";
+
+		echo "<div>";
+		echo '<p style="font-size:11px;color:var(--pw-color-fg-muted);margin-bottom:8px;">Left panel</p>';
+		echo '<div style="display:flex;gap:0;border:1px solid var(--pw-color-border-default);height:180px;">';
+		$render_modal(
+			"Panel izquierdo",
+			"Navegación o filtros deslizables desde la izquierda.",
+			"",
+			"position:relative;width:280px;max-width:280px;height:100%;max-height:100%;border-top:none;border-left:none;border-bottom:none;",
+		);
+		echo '<div style="flex:1;padding:16px;background:var(--pw-color-bg-default);display:flex;align-items:center;justify-content:center;">';
+		echo '<p class="pw-bui-paragraph" style="margin:0;color:var(--pw-color-fg-subtle);font-size:11px;">Contenido principal</p>';
+		echo "</div>";
+		echo "</div>";
+		echo "</div>";
+
+		echo "<div>";
+		echo '<p style="font-size:11px;color:var(--pw-color-fg-muted);margin-bottom:8px;">Fullscreen — .pw-bui-modal--fullscreen</p>';
+		echo '<div class="pw-bui-modal" style="width:100%;max-width:100%;">';
+		echo '<div class="pw-bui-modal__header" style="background:var(--pw-color-bg-inset);">';
+		echo '<p class="pw-bui-modal__title">Editor de campaña — pantalla completa</p>';
+		echo '<button type="button" class="pw-bui-modal__close" aria-label="Cerrar">✕</button>';
+		echo "</div>";
+		echo '<div class="pw-bui-modal__body" style="min-height:80px;">';
+		echo '<p class="pw-bui-paragraph" style="margin:0;color:var(--pw-color-fg-subtle);">Ocupa 100vw × 100vh. Ideal para editores de contenido o vistas de gestión complejas.</p>';
+		echo "</div>";
+		echo '<div class="pw-bui-modal__footer">';
+		echo '<button type="button" class="pw-bui-btn pw-bui-btn--ghost">Descartar</button>';
+		echo '<button type="button" class="pw-bui-btn pw-bui-btn--primary">Guardar cambios</button>';
 		echo "</div>";
 		echo "</div>";
 		echo "</div>";
