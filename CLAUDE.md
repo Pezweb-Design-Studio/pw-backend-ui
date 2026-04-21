@@ -13,6 +13,26 @@ Namespace: `PW\BackendUI` · Sin jQuery · Sin persistencia · Sin lógica de ne
 
 **Varios plugins:** cada uno llama `BackendUI::init([...])` con un **fragmento**; la librería **fusiona** pantallas, versión y marca. **No** hace falta `pw/wp-backend-ui-loader` ni pelear por prioridad de `plugins_loaded`.
 
+**Composer:** `"pw/backend-ui": "^1.2"` o `dev-main` con repositorio VCS según tu flujo.
+
+---
+
+## Fusión de fragmentos (referencia rápida)
+
+Tras cada `init([...])` con array no vacío, se añade un fragmento y se recalcula la config fusionada:
+
+| Clave | Regla |
+|--------|--------|
+| `screens` / `bridge_screens` | Unión (sin duplicados) de todos los fragmentos |
+| `assets_url` | Primer valor no vacío; con `WP_DEBUG` y varias URLs distintas → `E_USER_NOTICE` |
+| `version` | Máximo por `version_compare` entre fragmentos |
+| `admin_bridge` | OR lógico |
+| `brand` | Si el fragmento tiene `screens` vacíos → se mezcla en **`brand` base**; si no → en **`brand_by_screen[id]`** por cada `screen` del fragmento |
+
+`BackendUI::init()` **sin argumentos** (o `[]`) no registra fragmento nuevo; solo devuelve la instancia y re-aplica el merge actual.
+
+`BackendUI::reset()` vacía fragmentos e instancia (sobre todo para tests).
+
 ---
 
 ## Uso en plugins consumidores (reglas obligatorias)
@@ -61,8 +81,39 @@ El CSS/JS propio del plugin debe declarar **dependencia** del handle de estilos 
 
 ### Otros hooks
 
-- **`pw_bui/merged_config`**: ajustar el array fusionado tras combinar fragmentos.
+- **`pw_bui/merged_config`**: `( $merged, $fragments )` — ajustar la config fusionada.
 - **`pw_bui/enqueue_assets`**: después de encolar el core; args `( $hook_suffix, $assets_url, $version )`.
+- **`pw_bui/page_config`**: alterar el array pasado a `render_page()` antes de pintar.
+
+### Snippet mínimo (plugin)
+
+```php
+use PW\BackendUI\BackendUI;
+
+add_action('plugins_loaded', static function (): void {
+    BackendUI::init([
+        'assets_url' => plugin_dir_url(__FILE__) . 'vendor/pw/backend-ui/assets/',
+        'version'    => '1.0.0', // o constante del plugin
+        'screens'    => [ 'toplevel_page_mi-plugin', 'mi-padre_page_mi-sub' /* … */ ],
+        'brand'      => [ 'plugin_name' => __('Mi plugin', 'textdomain') ],
+    ]);
+});
+```
+
+CSS propio del admin: `wp_enqueue_style( 'mi-admin', $url, [ BackendUI::CORE_STYLE_HANDLE ], $ver );` en `admin_enqueue_scripts` **≥ 15**.
+
+### Verificación cuando “no se ve el diseño”
+
+1. En el HTML de la pantalla debe existir un `<link` a **`backend-ui.css`** (handle interno `pw-bui-core-styles`). Si no aparece, el encolado no corrió (lista `screens`, filtro, o **código desplegado ≠ plugin que WordPress carga**).
+2. Debe existir el contenedor **`#pw-backend-ui-app`** si usas `render_page()`.
+
+### Cabecera del layout (tokens)
+
+La barra **negra** del header (`.pw-bui-header`) no debe usar `var(--pw-color-fg-default)` para textos: en tema claro esos tokens son oscuros y quedan ilegibles sobre negro. Texto en header: colores claros fijos o estilos ya definidos en `backend-ui.css` para esa franja.
+
+### Playground
+
+`BackendUI::playground()` añade un menú admin con vista de componentes; reservarlo a **desarrollo** (el paquete no lo desactiva solo con `WP_DEBUG`).
 
 ### Qué no hacer
 
