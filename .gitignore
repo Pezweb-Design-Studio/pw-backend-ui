@@ -32,5 +32,4 @@ temp_build_*
 
 # others
 composer.lock
-CLAUDE.md
 .claude/
